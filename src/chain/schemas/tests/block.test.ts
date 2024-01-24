@@ -1,15 +1,16 @@
+import { TRANSACTION, VALID_SHA256, VALID_SHA256_2 } from '../../tests/mock'
 import { BlockSchema } from '../block'
 
 describe('BlockSchema', () => {
   const validBlock = {
     index: 1,
     timeStamp: new Date(),
-    data: null,
-    prevHash:
-      '1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef',
+    difficulty: 1,
+    prevHash: VALID_SHA256,
+    hash: VALID_SHA256_2,
     nonce: 2,
-    hash: 'abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890',
-    difficulty: 3,
+    message: null,
+    transactions: [TRANSACTION],
   }
 
   it('validates a correct block', () => {
@@ -17,7 +18,20 @@ describe('BlockSchema', () => {
   })
 
   it('rejects blocks with invalid data', () => {
-    const invalidBlock = { ...validBlock, prevHash: 'invalidHash' }
-    expect(BlockSchema.safeParse(invalidBlock).success).toBeFalsy()
+    expect(
+      BlockSchema.safeParse({ ...validBlock, prevHash: 'invalidHash' }).success
+    ).toBeFalsy()
+    expect(
+      BlockSchema.safeParse({ ...validBlock, hash: 'invalidHash' }).success
+    ).toBeFalsy()
+    expect(
+      BlockSchema.safeParse({ ...validBlock, index: -4 }).success
+    ).toBeFalsy()
+    expect(
+      BlockSchema.safeParse({ ...validBlock, difficulty: 65 }).success
+    ).toBeFalsy()
+    expect(
+      BlockSchema.safeParse({ ...validBlock, transactions: [] }).success
+    ).toBeFalsy()
   })
 })

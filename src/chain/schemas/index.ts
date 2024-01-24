@@ -1,4 +1,6 @@
 import { z } from 'zod'
+import { SHA256Regex, addressRegex } from '../utils'
 
-export const AddressSchema = z.string().regex(/^0x[a-fA-F0-9]{40}$/)
-export const SHA256Schema = z.string().regex(/^[a-fA-F0-9]{64}$/)
+export const AddressSchema = z.string().regex(addressRegex)
+export const MessageSchema = z.coerce.string().max(260).default('')
+export const SHA256Schema = z.string().regex(SHA256Regex)

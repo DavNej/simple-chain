@@ -1,26 +1,19 @@
 import { Transaction } from '../Transaction'
+import { VALID_TRANSACTION_ARGS } from './mock'
 
 describe('Transaction Class', () => {
-  const validData = {
-    from: '0x1234567890123456789012345678901234567aaa',
-    to: '0x1234567890123456789012345678901234567bbb',
-    amount: 100,
-    data: { foo: 'bar' },
-    message: 'Valid message',
-  }
-
   it('creates a valid transaction', () => {
-    const transaction = new Transaction(validData)
+    const transaction = new Transaction(VALID_TRANSACTION_ARGS)
 
     expect(transaction).toBeInstanceOf(Transaction)
-    expect(transaction.from).toBe(validData.from)
-    expect(transaction.to).toBe(validData.to)
-    expect(transaction.amount).toBe(validData.amount)
-    expect(transaction.message).toBe(validData.message)
+    expect(transaction.from).toBe(VALID_TRANSACTION_ARGS.from)
+    expect(transaction.to).toBe(VALID_TRANSACTION_ARGS.to)
+    expect(transaction.amout).toBe(VALID_TRANSACTION_ARGS.amout)
+    expect(transaction.message).toBe(VALID_TRANSACTION_ARGS.message)
   })
 
   it('throws error with invalid transaction data', () => {
-    const invalidData = { ...validData, from: 'invalidAddress' }
+    const invalidData = { ...VALID_TRANSACTION_ARGS, from: 'invalidAddress' }
     expect(() => new Transaction(invalidData)).toThrow()
   })
 })

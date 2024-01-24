@@ -1,4 +1,5 @@
-import { MessageSchema, AmountSchema, TransactionSchema } from '../transaction'
+import { MessageSchema } from '..'
+import { AmountSchema, TransactionSchema } from '../transaction'
 
 describe('MessageSchema', () => {
   it('validates correct messages', () => {

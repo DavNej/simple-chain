@@ -1,5 +1,4 @@
-import type { AddressType } from './types'
-import type { MessageType } from './types/transaction'
+import type { AddressType, MessageType } from './types'
 import { TransactionSchema } from './schemas/transaction'
 
 export class Transaction {
