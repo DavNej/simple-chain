@@ -19,7 +19,7 @@ export const MESSAGE = 'Valid message'
 export const VALID_TRANSACTION_ARGS = {
   from: ALICE,
   to: BOB,
-  amount: 101,
+  value: 101,
   data: DUMMY_DATA,
   message: MESSAGE,
 }

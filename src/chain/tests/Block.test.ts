@@ -8,14 +8,14 @@ describe('Block Class', () => {
     new Transaction({
       from: ALICE,
       to: BOB,
-      amount: 100,
+      value: 101,
       data: DUMMY_DATA,
       message: 'Transaction 1',
     }),
     new Transaction({
       from: BOB,
       to: CHARLES,
-      amout: 101,
+      value: 102,
       data: DUMMY_DATA,
       message: 'Transaction 2',
     }),

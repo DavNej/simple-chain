@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-import { TransactionSchema, AmountSchema } from '../schemas/transaction'
+import { TransactionSchema, ValueSchema } from '../schemas/transaction'
 
-export type AmountType = z.infer<typeof AmountSchema>
+export type ValueType = z.infer<typeof ValueSchema>
 export type TransactionType = z.infer<typeof TransactionSchema>

@@ -1,5 +1,5 @@
 import { MessageSchema } from '..'
-import { AmountSchema, TransactionSchema } from '../transaction'
+import { ValueSchema, TransactionSchema } from '../transaction'
 
 describe('MessageSchema', () => {
   it('validates correct messages', () => {
@@ -15,16 +15,16 @@ describe('MessageSchema', () => {
   })
 })
 
-describe('AmountSchema', () => {
-  it('validates nonnegative amounts', () => {
-    expect(AmountSchema.safeParse(100).success).toBeTruthy()
-    expect(AmountSchema.safeParse(0).success).toBeTruthy()
+describe('ValueSchema', () => {
+  it('validates nonnegative values', () => {
+    expect(ValueSchema.safeParse(100).success).toBeTruthy()
+    expect(ValueSchema.safeParse(0).success).toBeTruthy()
   })
 
-  it('rejects negative amounts', () => {
-    expect(AmountSchema.safeParse(-1).success).toBeFalsy()
-    expect(AmountSchema.safeParse(1.3).success).toBeFalsy()
-    expect(AmountSchema.safeParse(1000001).success).toBeFalsy()
+  it('rejects negative values', () => {
+    expect(ValueSchema.safeParse(-1).success).toBeFalsy()
+    expect(ValueSchema.safeParse(1.3).success).toBeFalsy()
+    expect(ValueSchema.safeParse(1000001).success).toBeFalsy()
   })
 })
 
@@ -32,7 +32,7 @@ describe('TransactionSchema', () => {
   const validTransaction = {
     from: '0x1234567890123456789012345678901234567890',
     to: '0x1234567890123456789012345678901234567890',
-    amount: 100,
+    value: 100,
     data: {},
     message: 'Valid message',
   }

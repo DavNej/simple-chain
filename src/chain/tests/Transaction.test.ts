@@ -8,7 +8,7 @@ describe('Transaction Class', () => {
     expect(transaction).toBeInstanceOf(Transaction)
     expect(transaction.from).toBe(VALID_TRANSACTION_ARGS.from)
     expect(transaction.to).toBe(VALID_TRANSACTION_ARGS.to)
-    expect(transaction.amout).toBe(VALID_TRANSACTION_ARGS.amout)
+    expect(transaction.value).toBe(VALID_TRANSACTION_ARGS.value)
     expect(transaction.message).toBe(VALID_TRANSACTION_ARGS.message)
   })
 
