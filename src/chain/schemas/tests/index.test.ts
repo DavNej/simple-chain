@@ -1,4 +1,4 @@
-import { AddressSchema, SHA256Schema } from '..'
+import { AddressSchema, MessageSchema, SHA256Schema } from '..'
 
 describe('AddressSchema', () => {
   it('validates correct addresses', () => {
@@ -22,6 +22,20 @@ describe('AddressSchema', () => {
       AddressSchema.safeParse('1234567890abcdef1234567890abcdef12345678')
         .success
     ).toBeFalsy()
+  })
+})
+
+describe('MessageSchema', () => {
+  it('validates correct messages', () => {
+    expect(MessageSchema.safeParse('Hello World').success).toBeTruthy()
+    expect(MessageSchema.safeParse('').success).toBeTruthy()
+    expect(MessageSchema.safeParse(undefined).success).toBeTruthy()
+    expect(MessageSchema.safeParse(null).success).toBeTruthy()
+    expect(MessageSchema.safeParse(123).success).toBeTruthy()
+  })
+
+  it('rejects incorrect messages', () => {
+    expect(MessageSchema.safeParse('a'.repeat(261)).success).toBeFalsy()
   })
 })
 

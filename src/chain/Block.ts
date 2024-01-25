@@ -1,10 +1,12 @@
 import { SHA256 } from 'crypto-js'
 
 import type { SHA256Type, MessageType } from './types'
-import type { TransactionType } from './types/transaction'
+import type { TransactionListType } from './types/transaction'
+import type { BlockType } from './types/block'
+
 import { BlockSchema } from './schemas/block'
 
-export class Block {
+export default class Block implements BlockType {
   index: number
   timeStamp: Date
   difficulty: number
@@ -12,7 +14,7 @@ export class Block {
   hash: SHA256Type
   nonce: number
   message: MessageType
-  transactions: TransactionType[]
+  transactions: TransactionListType
 
   constructor({
     index,
@@ -24,7 +26,7 @@ export class Block {
     index: number
     difficulty: number
     prevHash: SHA256Type
-    transactions: TransactionType[]
+    transactions: TransactionListType
     message: MessageType
   }) {
     this.index = index

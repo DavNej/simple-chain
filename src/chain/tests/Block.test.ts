@@ -1,5 +1,5 @@
-import { Block } from '../Block'
-import { Transaction } from '../Transaction'
+import Block from '../Block'
+import Transaction from '../Transaction'
 import { DUMMY_DATA, BOB, ALICE, VALID_SHA256, CHARLES } from './mock'
 import { SHA256Regex } from '../utils'
 

@@ -10,3 +10,5 @@ export const TransactionSchema = z.object({
   data: z.unknown(),
   message: MessageSchema,
 })
+
+export const TransactionListSchema = TransactionSchema.array()

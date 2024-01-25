@@ -1,4 +1,4 @@
-import { Transaction } from '../Transaction'
+import Transaction from '../Transaction'
 import { VALID_TRANSACTION_ARGS } from './mock'
 
 describe('Transaction Class', () => {

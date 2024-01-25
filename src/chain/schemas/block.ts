@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { MessageSchema, SHA256Schema } from '../schemas'
-import { TransactionSchema } from './transaction'
+import { TransactionListSchema } from './transaction'
 
 export const BlockSchema = z.object({
   index: z.number().int().nonnegative(),
@@ -10,5 +10,7 @@ export const BlockSchema = z.object({
   hash: SHA256Schema,
   nonce: z.number().int().nonnegative(),
   message: MessageSchema,
-  transactions: TransactionSchema.array().nonempty(),
+  transactions: TransactionListSchema,
 })
+
+export const BlockListSchema = BlockSchema.array()

@@ -1,19 +1,9 @@
-import { MessageSchema } from '..'
-import { ValueSchema, TransactionSchema } from '../transaction'
-
-describe('MessageSchema', () => {
-  it('validates correct messages', () => {
-    expect(MessageSchema.safeParse('Hello World').success).toBeTruthy()
-    expect(MessageSchema.safeParse('').success).toBeTruthy()
-    expect(MessageSchema.safeParse(undefined).success).toBeTruthy()
-    expect(MessageSchema.safeParse(null).success).toBeTruthy()
-    expect(MessageSchema.safeParse(123).success).toBeTruthy()
-  })
-
-  it('rejects incorrect messages', () => {
-    expect(MessageSchema.safeParse('a'.repeat(261)).success).toBeFalsy()
-  })
-})
+import { TRANSACTION } from '../../tests/mock'
+import {
+  ValueSchema,
+  TransactionSchema,
+  TransactionListSchema,
+} from '../transaction'
 
 describe('ValueSchema', () => {
   it('validates nonnegative values', () => {
@@ -29,20 +19,32 @@ describe('ValueSchema', () => {
 })
 
 describe('TransactionSchema', () => {
-  const validTransaction = {
-    from: '0x1234567890123456789012345678901234567890',
-    to: '0x1234567890123456789012345678901234567890',
-    value: 100,
-    data: {},
-    message: 'Valid message',
-  }
-
   it('validates correct transactions', () => {
-    expect(TransactionSchema.safeParse(validTransaction).success).toBeTruthy()
+    expect(TransactionSchema.safeParse(TRANSACTION).success).toBeTruthy()
   })
 
   it('rejects transactions with invalid data', () => {
-    const invalidTransaction = { ...validTransaction, from: 'invalidAddress' }
+    const invalidTransaction = { ...TRANSACTION, from: 'invalidAddress' }
     expect(TransactionSchema.safeParse(invalidTransaction).success).toBeFalsy()
+  })
+})
+
+describe('TransactionListSchema', () => {
+  const validTransactionList = [TRANSACTION, { ...TRANSACTION, value: 500 }]
+
+  it('validates a correct transaction list', () => {
+    expect(
+      TransactionListSchema.safeParse(validTransactionList).success
+    ).toBeTruthy()
+  })
+
+  it('rejects transaction lists with invalid transactions', () => {
+    const invalidTransactionList = [
+      ...validTransactionList,
+      { ...TRANSACTION, from: 'invalidAddress' },
+    ]
+    expect(
+      TransactionListSchema.safeParse(invalidTransactionList).success
+    ).toBeFalsy()
   })
 })

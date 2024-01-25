@@ -1,7 +1,8 @@
 import type { AddressType, MessageType } from './types'
 import { TransactionSchema } from './schemas/transaction'
+import type { TransactionType } from './types/transaction'
 
-export class Transaction {
+export default class Transaction implements TransactionType {
   from: AddressType
   to: AddressType
   value: number

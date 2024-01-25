@@ -1,4 +1,4 @@
-import { Transaction } from '../Transaction'
+import Transaction from '../Transaction'
 
 export const ALICE = '0x1234567890123456789012345678901234567aaa'
 export const BOB = '0x1234567890123456789012345678901234567bbb'
@@ -25,3 +25,14 @@ export const VALID_TRANSACTION_ARGS = {
 }
 
 export const TRANSACTION = new Transaction(VALID_TRANSACTION_ARGS)
+
+export const BLOCK = {
+  index: 1,
+  timeStamp: new Date(),
+  difficulty: 0,
+  prevHash: VALID_SHA256,
+  hash: VALID_SHA256_2,
+  nonce: 2,
+  message: MESSAGE,
+  transactions: [TRANSACTION],
+}
