@@ -19,4 +19,3 @@ export const VALID_TRANSACTION_ARGS = {
   data: DUMMY_DATA,
   message: MESSAGE,
 }
-

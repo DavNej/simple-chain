@@ -1,5 +1,5 @@
 import Transaction from '@/lib/chain/transaction'
-import * as mock from '@/tests/mocks/chain'
+import * as mock from 'tests/test-utils'
 
 const validArgs = {
   from: mock.ADDRESS_ALICE,

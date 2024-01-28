@@ -1,9 +1,9 @@
 import { AddressSchema, MessageSchema } from '@/lib/schemas'
-import { ADDRESS_ALICE } from '@/tests/mocks/chain'
+import * as mock from 'tests/test-utils'
 
 describe('AddressSchema', () => {
   it('validates correct wallet addresses', () => {
-    expect(AddressSchema.safeParse(ADDRESS_ALICE).success).toBeTruthy()
+    expect(AddressSchema.safeParse(mock.ADDRESS_ALICE).success).toBeTruthy()
   })
 
   it('rejects incorrect wallet addresses', () => {
@@ -11,11 +11,11 @@ describe('AddressSchema', () => {
     expect(AddressSchema.safeParse('0x123').success).toBeFalsy()
     expect(
       AddressSchema.safeParse('0x1234567890GHIJKL1234567890abcdef12345678')
-        .success
+        .success,
     ).toBeFalsy()
     expect(
       AddressSchema.safeParse('0x12345678901234567890123456789012345678901234')
-        .success
+        .success,
     ).toBeFalsy()
   })
 })
