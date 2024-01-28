@@ -1,9 +1,9 @@
 import * as Typography from '@/components/ui/typography'
 
-function App() {
+export default function App() {
   return (
     <main>
-      <Typography.H1 className='text-center p-8'>
+      <Typography.H1 className="p-8 text-center">
         Welcome to Simple chain 👋
       </Typography.H1>
     </main>
