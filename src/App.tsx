@@ -1,5 +1,13 @@
+import * as Typography from '@/components/ui/typography'
+
 function App() {
-  return <h1 className='text-3xl text-center'>Welcome to Simple chain 👋</h1>
+  return (
+    <main>
+      <Typography.H1 className='text-center p-8'>
+        Welcome to Simple chain 👋
+      </Typography.H1>
+    </main>
+  )
 }
 
 export default App
