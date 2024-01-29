@@ -11,5 +11,8 @@ export default defineConfig({
     environment: 'happy-dom',
     setupFiles: 'tests/setup',
     include: ['tests/**/*.test.{ts,tsx}'],
+    coverage: {
+      provider: 'istanbul',
+    },
   },
 })

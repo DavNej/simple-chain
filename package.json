@@ -10,9 +10,12 @@
     "build": "tsc && vite build",
     "serve": "vite preview",
     "test": "vitest",
+    "test:coverage": "vitest --coverage",
+    "test:ui": "vitest --ui",
     "lint": "eslint src --max-warnings=0",
     "format": "prettier --write .",
-    "typecheck": "tsc --project tsconfig.json --noEmit"
+    "typecheck": "tsc --project tsconfig.json --noEmit",
+    "validate": "bun run typecheck && bun run format && bun run lint"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
@@ -39,6 +42,8 @@
     "@typescript-eslint/eslint-plugin": "^6.19.1",
     "@typescript-eslint/parser": "^6.19.1",
     "@vitejs/plugin-react-swc": "^3.5.0",
+    "@vitest/coverage-istanbul": "^1.2.2",
+    "@vitest/ui": "^1.2.2",
     "autoprefixer": "^10.4.17",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
