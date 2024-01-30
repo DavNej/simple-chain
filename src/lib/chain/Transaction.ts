@@ -1,3 +1,5 @@
+import type { TransactionArgsType } from './types'
+
 export default class Transaction {
   from: string
   to: string
@@ -5,19 +7,7 @@ export default class Transaction {
   data: string | null
   message: string | null
 
-  constructor({
-    from,
-    to,
-    value,
-    data,
-    message,
-  }: {
-    from: string
-    to: string
-    value: number
-    data?: string
-    message?: string
-  }) {
+  constructor({ from, to, value, data, message }: TransactionArgsType) {
     this.from = from
     this.to = to
     this.value = value || 0

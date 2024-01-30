@@ -25,7 +25,6 @@ bun run build
 ```
 
 Compiles TypeScript code and builds the project for production.
-  
 
 ```bash
 bun run serve

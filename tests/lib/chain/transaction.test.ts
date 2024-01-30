@@ -5,7 +5,7 @@ const validArgs = {
   from: mock.ADDRESS_ALICE,
   to: mock.ADDRESS_BOB,
   value: 100,
-  data: mock.DUMMY_DATA,
+  data: mock.DATA_JSON,
   message: mock.MESSAGE,
 }
 
