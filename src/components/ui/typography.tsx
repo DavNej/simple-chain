@@ -8,7 +8,7 @@ export function H1(props: HeadingProps) {
       {...props}
       className={cn(
         'scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl',
-        props.className
+        props.className,
       )}
     />
   )
@@ -20,7 +20,7 @@ export function H2(props: HeadingProps) {
       {...props}
       className={cn(
         'scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0',
-        props.className
+        props.className,
       )}
     />
   )

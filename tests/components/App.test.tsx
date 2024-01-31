@@ -3,6 +3,6 @@ import App from '@/App'
 
 test('Renders the main page', () => {
   render(<App />)
-  const text = screen.getByText('Welcome to Simple chain 👋')
-  expect(text).toBeDefined()
+  expect(screen.getByText('Welcome to Simple chain 👋')).toBeInTheDocument()
+  expect(screen.getByText('Send a transaction')).toBeInTheDocument()
 })

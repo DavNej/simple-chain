@@ -15,4 +15,5 @@ export default defineConfig({
       provider: 'istanbul',
     },
   },
+  server: { port: 3000 },
 })
