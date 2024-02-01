@@ -24,7 +24,11 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 
-export function TransactionForm() {
+export function TransactionForm({
+  addTransaction,
+}: {
+  addTransaction: (tx: Transaction) => void
+}) {
   const form = useForm<TransactionArgsType>({
     resolver: zodResolver(transactionArgsSchema),
     defaultValues: {
@@ -38,6 +42,7 @@ export function TransactionForm() {
 
   function onSubmit(values: TransactionArgsType) {
     const tx = new Transaction(values)
+    addTransaction(tx)
     console.log(tx)
   }
 
