@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest'
 import { AddressSchema, MessageSchema } from '@/lib/schemas'
 import * as mock from 'tests/test-utils'
 

@@ -1,7 +1,8 @@
+import { it, expect } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import App from '@/App'
 
-test('Renders the main page', () => {
+it('Renders the main page', () => {
   render(<App />)
   expect(screen.getByText('Welcome to Simple chain 👋')).toBeInTheDocument()
   expect(screen.getByText('Create a transaction')).toBeInTheDocument()
