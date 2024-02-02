@@ -39,6 +39,16 @@ export function TransactionForm({
     },
   })
 
+  function generateTx() {
+    addTransaction({
+      from: '0xA82486CF57F8d8F69f145CEF15474842a4dAB494',
+      to: '0x2324D956C733a3b017e340b3aDf77D88aD95b0f4',
+      value: 26,
+      data: '0x49cd30044788e2203795f6a82b34132910c928fab24c01e0797a37a69bab17bb878f693700000000000000000000000000000000000000000000000000000000031d22f90',
+      message: 'Hello world',
+    })
+  }
+
   function onSubmit(values: TransactionArgsType) {
     addTransaction(values)
   }
@@ -129,9 +139,12 @@ export function TransactionForm({
               )}
             />
           </CardContent>
-          <CardFooter>
-            <Button type="submit" className="w-full">
+          <CardFooter className="flex gap-4">
+            <Button type="submit" className="flex-1">
               Send
+            </Button>
+            <Button type="button" className="flex-1" onClick={generateTx}>
+              Generate
             </Button>
           </CardFooter>
         </form>

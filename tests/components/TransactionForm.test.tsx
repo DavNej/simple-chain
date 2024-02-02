@@ -45,6 +45,21 @@ describe('TransactionForm', () => {
     })
   })
 
+  it('generates a mock transaction', async () => {
+    render(<TransactionForm addTransaction={addTransaction} />)
+
+    await userEvent.click(screen.getByRole('button', { name: /generate/i }))
+
+    expect(addTransaction).toHaveBeenCalledTimes(1)
+    expect(addTransaction).toHaveBeenCalledWith({
+      from: '0xA82486CF57F8d8F69f145CEF15474842a4dAB494',
+      to: '0x2324D956C733a3b017e340b3aDf77D88aD95b0f4',
+      value: 26,
+      data: '0x49cd30044788e2203795f6a82b34132910c928fab24c01e0797a37a69bab17bb878f693700000000000000000000000000000000000000000000000000000000031d22f90',
+      message: 'Hello world',
+    })
+  })
+
   it('validates fields correctly', async () => {
     render(<TransactionForm addTransaction={addTransaction} />)
     const user = userEvent.setup()
