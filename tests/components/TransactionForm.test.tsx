@@ -1,19 +1,20 @@
 import { describe, it, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import { TransactionForm } from '@/components/TransactionForm'
-import Transaction from '@/lib/chain/transaction'
 import userEvent from '@testing-library/user-event'
 import * as mock from 'tests/test-utils'
 
 vi.mock('@/lib/chain/Transaction', async () => ({ default: vi.fn() }))
+const addTransaction = vi.fn()
 
 beforeEach(() => {
+  addTransaction.mockReset()
   vi.resetAllMocks()
 })
 
 describe('TransactionForm', () => {
   it('renders form correctly', () => {
-    render(<TransactionForm />)
+    render(<TransactionForm addTransaction={addTransaction} />)
 
     expect(screen.getByLabelText(/from/i)).toBeInTheDocument()
     expect(screen.getByLabelText(/recipient/i)).toBeInTheDocument()
@@ -24,7 +25,7 @@ describe('TransactionForm', () => {
   })
 
   it('submits form with valid data', async () => {
-    render(<TransactionForm />)
+    render(<TransactionForm addTransaction={addTransaction} />)
 
     await userEvent.type(screen.getByLabelText(/from/i), mock.ADDRESS_ALICE)
     await userEvent.type(screen.getByLabelText(/recipient/i), mock.ADDRESS_BOB)
@@ -34,7 +35,8 @@ describe('TransactionForm', () => {
 
     await userEvent.click(screen.getByRole('button', { name: /send/i }))
 
-    expect(Transaction).toHaveBeenCalledWith({
+    expect(addTransaction).toHaveBeenCalledTimes(1)
+    expect(addTransaction).toHaveBeenCalledWith({
       from: mock.ADDRESS_ALICE,
       to: mock.ADDRESS_BOB,
       value: 500,
@@ -44,7 +46,7 @@ describe('TransactionForm', () => {
   })
 
   it('validates fields correctly', async () => {
-    render(<TransactionForm />)
+    render(<TransactionForm addTransaction={addTransaction} />)
     const user = userEvent.setup()
 
     const fromInput = screen.getByLabelText(/from/i)
@@ -58,7 +60,7 @@ describe('TransactionForm', () => {
 
     await user.click(screen.getByRole('button', { name: /send/i }))
 
-    expect(Transaction).not.toHaveBeenCalled()
+    expect(addTransaction).not.toHaveBeenCalled()
 
     const fromErr = document.getElementById(`${fromInput.id}-message`)
       ?.textContent

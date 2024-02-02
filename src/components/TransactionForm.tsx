@@ -1,6 +1,5 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import Transaction from '@/lib/chain/transaction'
 import type { TransactionArgsType } from '@/lib/chain/types'
 import { transactionArgsSchema } from '@/lib/chain/schemas'
 import { Button } from '@/components/ui/button'
@@ -27,7 +26,7 @@ import {
 export function TransactionForm({
   addTransaction,
 }: {
-  addTransaction: (tx: Transaction) => void
+  addTransaction: (values: TransactionArgsType) => void
 }) {
   const form = useForm<TransactionArgsType>({
     resolver: zodResolver(transactionArgsSchema),
@@ -41,15 +40,13 @@ export function TransactionForm({
   })
 
   function onSubmit(values: TransactionArgsType) {
-    const tx = new Transaction(values)
-    addTransaction(tx)
-    console.log(tx)
+    addTransaction(values)
   }
 
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle>Send a transaction</CardTitle>
+        <CardTitle>Create a transaction</CardTitle>
         <CardDescription>
           Fill in the form to create a transaction
         </CardDescription>

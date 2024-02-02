@@ -1,12 +1,14 @@
-import { TransactionForm } from '@/components/TransactionForm'
-import * as Typography from '@/components/ui/typography'
 import { useState } from 'react'
-import type Transaction from '@/lib/chain/transaction'
+import Transaction from '@/lib/chain/transaction'
+import type { TransactionArgsType } from '@/lib/chain/types'
+import * as Typography from '@/components/ui/typography'
+import { TransactionForm } from '@/components/TransactionForm'
 
 export default function App() {
   const [transactions, setTransactions] = useState<Transaction[]>([])
 
-  function addTransaction(tx: Transaction) {
+  function addTransaction(values: TransactionArgsType) {
+    const tx = new Transaction(values)
     setTransactions(state => [...state, tx])
   }
 
@@ -16,8 +18,10 @@ export default function App() {
         Welcome to Simple chain 👋
       </Typography.H1>
 
-      <div className="flex w-1/2 p-8">
-        <TransactionForm addTransaction={addTransaction} />
+      <div className="flex gap-4 p-8">
+        <div className="w-1/3">
+          <TransactionForm addTransaction={addTransaction} />
+        </div>
       </div>
     </main>
   )
