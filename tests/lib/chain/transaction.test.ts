@@ -10,6 +10,8 @@ const validArgs = {
   message: mock.MESSAGE,
 }
 
+vi.useFakeTimers().setSystemTime(new Date('2024-01-01'))
+
 describe('Transaction Class', () => {
   it('creates a valid transaction', () => {
     const transaction = new Transaction(validArgs)
@@ -20,6 +22,7 @@ describe('Transaction Class', () => {
     expect(transaction.value).toBe(validArgs.value)
     expect(transaction.data).toBe(validArgs.data)
     expect(transaction.message).toBe(validArgs.message)
+    expect(transaction.createdAt).toBe(1704067200000)
   })
 
   it('handles optional fields correctly', () => {

@@ -6,6 +6,7 @@ export default class Transaction {
   value: number
   data: string | null
   message: string | null
+  createdAt: number
 
   constructor({ from, to, value, data, message }: TransactionArgsType) {
     this.from = from
@@ -13,5 +14,6 @@ export default class Transaction {
     this.value = value || 0
     this.data = data || null
     this.message = message || null
+    this.createdAt = Date.now()
   }
 }
