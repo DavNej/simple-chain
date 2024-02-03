@@ -14,10 +14,12 @@ export const DATA_STRING =
 
 export const MESSAGE = 'Valid message'
 
-export const VALID_TRANSACTION_ARGS = {
+export const VALID_TRANSACTION_ARGS_1 = {
   from: ADDRESS_ALICE,
   to: ADDRESS_BOB,
   value: 100,
   data: DATA_JSON,
+  message: 'First valid message',
+}
   message: MESSAGE,
 }

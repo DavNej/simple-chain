@@ -1,24 +1,18 @@
 import { describe, it, expect } from 'vitest'
-import { transactionArgsSchema } from '@/lib/chain/schemas'
+import { transactionArgsSchema, blockArgsSchema } from '@/lib/chain/schemas'
 import * as mock from 'tests/test-utils'
-
-const validData = {
-  from: mock.ADDRESS_ALICE,
-  to: mock.ADDRESS_BOB,
-  value: 500,
-  data: mock.DATA_JSON,
-  message: mock.MESSAGE,
-}
 
 describe('transactionArgsSchema', () => {
   it('validates valid data', () => {
-    expect(() => transactionArgsSchema.parse(validData)).not.toThrow()
+    expect(() =>
+      transactionArgsSchema.parse(mock.VALID_TRANSACTION_ARGS_1),
+    ).not.toThrow()
   })
 
   it('accepts optional "message" and "data" fields', () => {
     expect(() =>
       transactionArgsSchema.parse({
-        ...validData,
+        ...mock.VALID_TRANSACTION_ARGS_1,
         data: undefined,
         message: undefined,
       }),
@@ -27,7 +21,7 @@ describe('transactionArgsSchema', () => {
 
   it('handles default value for value field', () => {
     const result = transactionArgsSchema.parse({
-      ...validData,
+      ...mock.VALID_TRANSACTION_ARGS_1,
       value: undefined,
     })
     expect(result.value).toBe(0)
@@ -36,7 +30,7 @@ describe('transactionArgsSchema', () => {
   it('throws an error for invalid address', () => {
     expect(() =>
       transactionArgsSchema.parse({
-        ...validData,
+        ...mock.VALID_TRANSACTION_ARGS_1,
         from: 'invalid address',
       }),
     ).toThrowErrorMatchingInlineSnapshot(`
@@ -64,7 +58,7 @@ describe('transactionArgsSchema', () => {
     `)
     expect(() =>
       transactionArgsSchema.parse({
-        ...validData,
+        ...mock.VALID_TRANSACTION_ARGS_1,
         to: 'invalid address',
       }),
     ).toThrowErrorMatchingInlineSnapshot(`
@@ -95,7 +89,7 @@ describe('transactionArgsSchema', () => {
   it('throws an error for non positive int value', () => {
     expect(() =>
       transactionArgsSchema.parse({
-        ...validData,
+        ...mock.VALID_TRANSACTION_ARGS_1,
         value: -100,
       }),
     ).toThrowErrorMatchingInlineSnapshot(`
@@ -115,7 +109,7 @@ describe('transactionArgsSchema', () => {
     `)
     expect(() =>
       transactionArgsSchema.parse({
-        ...validData,
+        ...mock.VALID_TRANSACTION_ARGS_1,
         value: 1.3,
       }),
     ).toThrowErrorMatchingInlineSnapshot(`
@@ -136,7 +130,7 @@ describe('transactionArgsSchema', () => {
   it('throws an error for value greater than 1.000.0000', () => {
     expect(() =>
       transactionArgsSchema.parse({
-        ...validData,
+        ...mock.VALID_TRANSACTION_ARGS_1,
         value: 1000001,
       }),
     ).toThrowErrorMatchingInlineSnapshot(`
