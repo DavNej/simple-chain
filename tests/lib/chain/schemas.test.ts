@@ -150,3 +150,158 @@ describe('transactionArgsSchema', () => {
     `)
   })
 })
+
+describe('blockArgsSchema', () => {
+  it('validates valid data', () => {
+    expect(() => blockArgsSchema.parse(mock.VALID_BLOCK_ARGS)).not.toThrow()
+  })
+
+  it('accepts optional "message" field', () => {
+    expect(() =>
+      blockArgsSchema.parse({
+        ...mock.VALID_BLOCK_ARGS,
+        message: undefined,
+      }),
+    ).not.toThrow()
+  })
+
+  it('throws an error for invalid hash', () => {
+    expect(() =>
+      blockArgsSchema.parse({
+        ...mock.VALID_BLOCK_ARGS,
+        prevHash: 'invalid hash',
+      }),
+    ).toThrowErrorMatchingInlineSnapshot(`
+      [ZodError: [
+        {
+          "validation": "regex",
+          "code": "invalid_string",
+          "message": "Wrong format for hash",
+          "path": [
+            "prevHash"
+          ]
+        },
+        {
+          "code": "too_small",
+          "minimum": 64,
+          "type": "string",
+          "inclusive": true,
+          "exact": true,
+          "message": "String must contain exactly 64 character(s)",
+          "path": [
+            "prevHash"
+          ]
+        }
+      ]]
+    `)
+  })
+
+  it('throws an error for non positive int index and difficulty', () => {
+    expect(() =>
+      blockArgsSchema.parse({
+        ...mock.VALID_BLOCK_ARGS,
+        index: -2,
+        difficulty: -3,
+      }),
+    ).toThrowErrorMatchingInlineSnapshot(`
+      [ZodError: [
+        {
+          "code": "too_small",
+          "minimum": 0,
+          "type": "number",
+          "inclusive": true,
+          "exact": false,
+          "message": "Number must be greater than or equal to 0",
+          "path": [
+            "index"
+          ]
+        },
+        {
+          "code": "too_small",
+          "minimum": 0,
+          "type": "number",
+          "inclusive": true,
+          "exact": false,
+          "message": "Number must be greater than or equal to 0",
+          "path": [
+            "difficulty"
+          ]
+        }
+      ]]
+    `)
+    expect(() =>
+      blockArgsSchema.parse({
+        ...mock.VALID_BLOCK_ARGS,
+        index: 1.3,
+        difficulty: 2.4,
+      }),
+    ).toThrowErrorMatchingInlineSnapshot(`
+      [ZodError: [
+        {
+          "code": "invalid_type",
+          "expected": "integer",
+          "received": "float",
+          "message": "Expected integer, received float",
+          "path": [
+            "index"
+          ]
+        },
+        {
+          "code": "invalid_type",
+          "expected": "integer",
+          "received": "float",
+          "message": "Expected integer, received float",
+          "path": [
+            "difficulty"
+          ]
+        }
+      ]]
+    `)
+  })
+
+  it('throws an error for difficulty greater than 32', () => {
+    expect(() =>
+      blockArgsSchema.parse({
+        ...mock.VALID_BLOCK_ARGS,
+        difficulty: 33,
+      }),
+    ).toThrowErrorMatchingInlineSnapshot(`
+      [ZodError: [
+        {
+          "code": "too_big",
+          "maximum": 32,
+          "type": "number",
+          "inclusive": true,
+          "exact": false,
+          "message": "Number must be less than or equal to 32",
+          "path": [
+            "difficulty"
+          ]
+        }
+      ]]
+    `)
+  })
+
+  it('throws an error for empty transaction array', () => {
+    expect(() =>
+      blockArgsSchema.parse({
+        ...mock.VALID_BLOCK_ARGS,
+        transactions: [],
+      }),
+    ).toThrowErrorMatchingInlineSnapshot(`
+      [ZodError: [
+        {
+          "code": "too_small",
+          "minimum": 1,
+          "type": "array",
+          "inclusive": true,
+          "exact": false,
+          "message": "Array must contain at least 1 element(s)",
+          "path": [
+            "transactions"
+          ]
+        }
+      ]]
+    `)
+  })
+})

@@ -14,3 +14,8 @@ export const MessageSchema = z.coerce
     message: "Message can't exceed 260 characters",
   })
   .optional()
+
+export const SHA256Schema = z
+  .string()
+  .regex(SHA256Regex, { message: 'Wrong format for hash' })
+  .length(64)

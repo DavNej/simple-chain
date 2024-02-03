@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { AddressSchema, MessageSchema } from '@/lib/schemas'
+import { AddressSchema, MessageSchema, SHA256Schema } from '@/lib/schemas'
 import * as mock from 'tests/test-utils'
 
 describe('AddressSchema', () => {
@@ -110,5 +110,55 @@ describe('MessageSchema', () => {
     `)
   })
 })
+
+describe('SHA256Schema', () => {
+  it('validates valid SHA-256 hashes', () => {
+    expect(() =>
+      SHA256Schema.parse(
+        '1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef',
+      ),
+    ).not.toThrow()
+    expect(() =>
+      SHA256Schema.parse(
+        'ABCDEFabcdef1234567890ABCDEFabcdef1234567890abcdef1234567890ABCD',
+      ),
+    ).not.toThrow()
+  })
+
+  it('throws an error for invalid SHA-256 hashes', () => {
+    expect(() => SHA256Schema.parse('123456'))
+      .toThrowErrorMatchingInlineSnapshot(`
+      [ZodError: [
+        {
+          "validation": "regex",
+          "code": "invalid_string",
+          "message": "Wrong format for hash",
+          "path": []
+        },
+        {
+          "code": "too_small",
+          "minimum": 64,
+          "type": "string",
+          "inclusive": true,
+          "exact": true,
+          "message": "String must contain exactly 64 character(s)",
+          "path": []
+        }
+      ]]
+    `)
+    expect(() =>
+      SHA256Schema.parse(
+        'XYZ1234567890abcdef1234567890abcdef1234567890abcdef1234567890abc',
+      ),
+    ).toThrowErrorMatchingInlineSnapshot(`
+      [ZodError: [
+        {
+          "validation": "regex",
+          "code": "invalid_string",
+          "message": "Wrong format for hash",
+          "path": []
+        }
+      ]]
+    `)
   })
 })

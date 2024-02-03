@@ -1,3 +1,5 @@
+import Transaction from '@/lib/chain/transaction'
+
 export const ADDRESS_ALICE = '0x1234567890123456789012345678901234567aaa'
 export const ADDRESS_BOB = '0x1234567890123456789012345678901234567bbb'
 export const ADDRESS_CHARLES = '0x1234567890123456789012345678901234567ccc'
@@ -21,5 +23,21 @@ export const VALID_TRANSACTION_ARGS_1 = {
   data: DATA_JSON,
   message: 'First valid message',
 }
-  message: MESSAGE,
+
+export const VALID_TRANSACTION_ARGS_2 = {
+  from: ADDRESS_BOB,
+  to: ADDRESS_CHARLES,
+  value: 200,
+  data: DATA_STRING,
+  message: 'Second valid message',
+}
+
+export const TRANSACTION = new Transaction(VALID_TRANSACTION_ARGS_1)
+
+export const VALID_BLOCK_ARGS = {
+  index: 0,
+  difficulty: 1,
+  prevHash: VALID_HASH_1,
+  message: 'Block message',
+  transactions: [TRANSACTION],
 }
