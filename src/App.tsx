@@ -3,6 +3,8 @@ import Transaction from '@/lib/chain/transaction'
 import type { TransactionArgsType } from '@/lib/chain/types'
 import * as Typography from '@/components/ui/typography'
 import { TransactionForm } from '@/components/TransactionForm'
+import TransactionsTable from '@/components/TransactionsTable/TransactionsTable'
+import { columns } from '@/components/TransactionsTable/columns'
 
 export default function App() {
   const [transactions, setTransactions] = useState<Transaction[]>([])
@@ -21,6 +23,9 @@ export default function App() {
       <div className="flex gap-4 p-8">
         <div className="w-1/3">
           <TransactionForm addTransaction={addTransaction} />
+        </div>
+        <div className="w-2/3">
+          <TransactionsTable columns={columns} data={transactions} />
         </div>
       </div>
     </main>

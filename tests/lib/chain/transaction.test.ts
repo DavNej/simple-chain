@@ -10,11 +10,11 @@ const validArgs = {
   message: mock.MESSAGE,
 }
 
-vi.useFakeTimers().setSystemTime(new Date('2024-01-01'))
-
 describe('Transaction Class', () => {
   it('creates a valid transaction', () => {
+    vi.useFakeTimers().setSystemTime(new Date('2024-01-01'))
     const transaction = new Transaction(validArgs)
+    vi.useRealTimers()
 
     expect(transaction).toBeInstanceOf(Transaction)
     expect(transaction.from).toBe(validArgs.from)
