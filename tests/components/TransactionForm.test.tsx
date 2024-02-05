@@ -2,14 +2,12 @@ import { describe, it, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import { TransactionForm } from '@/components/TransactionForm'
 import userEvent from '@testing-library/user-event'
-import * as mock from 'tests/test-utils'
+import mock from 'tests/test-utils/mock'
 
-vi.mock('@/lib/chain/Transaction', async () => ({ default: vi.fn() }))
 const addTransaction = vi.fn()
 
 beforeEach(() => {
   addTransaction.mockReset()
-  vi.resetAllMocks()
 })
 
 describe('TransactionForm', () => {

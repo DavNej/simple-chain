@@ -1,33 +1,25 @@
 import { describe, it, expect, vi } from 'vitest'
 import Transaction from '@/lib/chain/transaction'
-import * as mock from 'tests/test-utils'
-
-const validArgs = {
-  from: mock.ADDRESS_ALICE,
-  to: mock.ADDRESS_BOB,
-  value: 100,
-  data: mock.DATA_JSON,
-  message: mock.MESSAGE,
-}
+import mock from 'tests/test-utils/mock'
 
 describe('Transaction Class', () => {
   it('creates a valid transaction', () => {
     vi.useFakeTimers().setSystemTime(new Date('2024-01-01'))
-    const transaction = new Transaction(validArgs)
+    const transaction = new Transaction(mock.TRANSACTION_ARGS_1)
     vi.useRealTimers()
 
     expect(transaction).toBeInstanceOf(Transaction)
-    expect(transaction.from).toBe(validArgs.from)
-    expect(transaction.to).toBe(validArgs.to)
-    expect(transaction.value).toBe(validArgs.value)
-    expect(transaction.data).toBe(validArgs.data)
-    expect(transaction.message).toBe(validArgs.message)
+    expect(transaction.from).toBe(mock.TRANSACTION_ARGS_1.from)
+    expect(transaction.to).toBe(mock.TRANSACTION_ARGS_1.to)
+    expect(transaction.value).toBe(mock.TRANSACTION_ARGS_1.value)
+    expect(transaction.data).toBe(mock.TRANSACTION_ARGS_1.data)
+    expect(transaction.message).toBe(mock.TRANSACTION_ARGS_1.message)
     expect(transaction.createdAt).toBe(1704067200000)
   })
 
   it('handles optional fields correctly', () => {
     const transaction = new Transaction({
-      ...validArgs,
+      ...mock.TRANSACTION_ARGS_1,
       data: undefined,
       message: undefined,
     })

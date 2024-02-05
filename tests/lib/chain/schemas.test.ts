@@ -1,18 +1,18 @@
 import { describe, it, expect } from 'vitest'
 import { transactionArgsSchema, blockArgsSchema } from '@/lib/chain/schemas'
-import * as mock from 'tests/test-utils'
+import mock from 'tests/test-utils/mock'
 
 describe('transactionArgsSchema', () => {
   it('validates valid data', () => {
     expect(() =>
-      transactionArgsSchema.parse(mock.VALID_TRANSACTION_ARGS_1),
+      transactionArgsSchema.parse(mock.TRANSACTION_ARGS_1),
     ).not.toThrow()
   })
 
   it('accepts optional "message" and "data" fields', () => {
     expect(() =>
       transactionArgsSchema.parse({
-        ...mock.VALID_TRANSACTION_ARGS_1,
+        ...mock.TRANSACTION_ARGS_1,
         data: undefined,
         message: undefined,
       }),
@@ -21,7 +21,7 @@ describe('transactionArgsSchema', () => {
 
   it('handles default value for value field', () => {
     const result = transactionArgsSchema.parse({
-      ...mock.VALID_TRANSACTION_ARGS_1,
+      ...mock.TRANSACTION_ARGS_1,
       value: undefined,
     })
     expect(result.value).toBe(0)
@@ -30,7 +30,7 @@ describe('transactionArgsSchema', () => {
   it('throws an error for invalid address', () => {
     expect(() =>
       transactionArgsSchema.parse({
-        ...mock.VALID_TRANSACTION_ARGS_1,
+        ...mock.TRANSACTION_ARGS_1,
         from: 'invalid address',
       }),
     ).toThrowErrorMatchingInlineSnapshot(`
@@ -58,7 +58,7 @@ describe('transactionArgsSchema', () => {
     `)
     expect(() =>
       transactionArgsSchema.parse({
-        ...mock.VALID_TRANSACTION_ARGS_1,
+        ...mock.TRANSACTION_ARGS_1,
         to: 'invalid address',
       }),
     ).toThrowErrorMatchingInlineSnapshot(`
@@ -89,7 +89,7 @@ describe('transactionArgsSchema', () => {
   it('throws an error for non positive int value', () => {
     expect(() =>
       transactionArgsSchema.parse({
-        ...mock.VALID_TRANSACTION_ARGS_1,
+        ...mock.TRANSACTION_ARGS_1,
         value: -100,
       }),
     ).toThrowErrorMatchingInlineSnapshot(`
@@ -109,7 +109,7 @@ describe('transactionArgsSchema', () => {
     `)
     expect(() =>
       transactionArgsSchema.parse({
-        ...mock.VALID_TRANSACTION_ARGS_1,
+        ...mock.TRANSACTION_ARGS_1,
         value: 1.3,
       }),
     ).toThrowErrorMatchingInlineSnapshot(`
@@ -130,7 +130,7 @@ describe('transactionArgsSchema', () => {
   it('throws an error for value greater than 1.000.0000', () => {
     expect(() =>
       transactionArgsSchema.parse({
-        ...mock.VALID_TRANSACTION_ARGS_1,
+        ...mock.TRANSACTION_ARGS_1,
         value: 1000001,
       }),
     ).toThrowErrorMatchingInlineSnapshot(`
@@ -153,13 +153,13 @@ describe('transactionArgsSchema', () => {
 
 describe('blockArgsSchema', () => {
   it('validates valid data', () => {
-    expect(() => blockArgsSchema.parse(mock.VALID_BLOCK_ARGS)).not.toThrow()
+    expect(() => blockArgsSchema.parse(mock.BLOCK_ARGS)).not.toThrow()
   })
 
   it('accepts optional "message" field', () => {
     expect(() =>
       blockArgsSchema.parse({
-        ...mock.VALID_BLOCK_ARGS,
+        ...mock.BLOCK_ARGS,
         message: undefined,
       }),
     ).not.toThrow()
@@ -168,7 +168,7 @@ describe('blockArgsSchema', () => {
   it('throws an error for invalid hash', () => {
     expect(() =>
       blockArgsSchema.parse({
-        ...mock.VALID_BLOCK_ARGS,
+        ...mock.BLOCK_ARGS,
         prevHash: 'invalid hash',
       }),
     ).toThrowErrorMatchingInlineSnapshot(`
@@ -199,7 +199,7 @@ describe('blockArgsSchema', () => {
   it('throws an error for non positive int index and difficulty', () => {
     expect(() =>
       blockArgsSchema.parse({
-        ...mock.VALID_BLOCK_ARGS,
+        ...mock.BLOCK_ARGS,
         index: -2,
         difficulty: -3,
       }),
@@ -231,7 +231,7 @@ describe('blockArgsSchema', () => {
     `)
     expect(() =>
       blockArgsSchema.parse({
-        ...mock.VALID_BLOCK_ARGS,
+        ...mock.BLOCK_ARGS,
         index: 1.3,
         difficulty: 2.4,
       }),
@@ -262,7 +262,7 @@ describe('blockArgsSchema', () => {
   it('throws an error for difficulty greater than 32', () => {
     expect(() =>
       blockArgsSchema.parse({
-        ...mock.VALID_BLOCK_ARGS,
+        ...mock.BLOCK_ARGS,
         difficulty: 33,
       }),
     ).toThrowErrorMatchingInlineSnapshot(`
@@ -285,7 +285,7 @@ describe('blockArgsSchema', () => {
   it('throws an error for empty transaction array', () => {
     expect(() =>
       blockArgsSchema.parse({
-        ...mock.VALID_BLOCK_ARGS,
+        ...mock.BLOCK_ARGS,
         transactions: [],
       }),
     ).toThrowErrorMatchingInlineSnapshot(`

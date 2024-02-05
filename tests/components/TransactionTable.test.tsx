@@ -2,9 +2,10 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import TransactionsTable from '@/components/TransactionsTable/TransactionsTable'
 import { columns } from '@/components/TransactionsTable/columns'
-import * as mock from 'tests/test-utils'
+import mock from 'tests/test-utils/mock'
+import { buildTransactionBatch } from 'tests/test-utils/helpers'
 
-const transactions = mock.buildTransactions()
+const transactions = buildTransactionBatch()
 
 describe('TransactionsTable', () => {
   it('renders table with data correctly', () => {

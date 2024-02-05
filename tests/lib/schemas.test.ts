@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { AddressSchema, MessageSchema, SHA256Schema } from '@/lib/schemas'
-import * as mock from 'tests/test-utils'
+import mock from 'tests/test-utils/mock'
 
 describe('AddressSchema', () => {
   it('validates valid address', () => {
@@ -86,7 +86,7 @@ describe('AddressSchema', () => {
 
 describe('MessageSchema', () => {
   it('validates valid messages', () => {
-    expect(() => MessageSchema.parse('Valid message')).not.toThrow()
+    expect(() => MessageSchema.parse(mock.MESSAGE)).not.toThrow()
     expect(() => MessageSchema.parse('')).not.toThrow()
     expect(() => MessageSchema.parse(null)).not.toThrow()
     expect(() => MessageSchema.parse(123)).not.toThrow()
@@ -113,16 +113,7 @@ describe('MessageSchema', () => {
 
 describe('SHA256Schema', () => {
   it('validates valid SHA-256 hashes', () => {
-    expect(() =>
-      SHA256Schema.parse(
-        '1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef',
-      ),
-    ).not.toThrow()
-    expect(() =>
-      SHA256Schema.parse(
-        'ABCDEFabcdef1234567890ABCDEFabcdef1234567890abcdef1234567890ABCD',
-      ),
-    ).not.toThrow()
+    expect(() => SHA256Schema.parse(mock.HASH_1)).not.toThrow()
   })
 
   it('throws an error for invalid SHA-256 hashes', () => {
