@@ -1,8 +1,8 @@
 import { describe, it, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import { TransactionForm } from '@/components/TransactionForm'
-import userEvent from '@testing-library/user-event'
 import mock from 'tests/test-utils/mock'
+import { setup } from 'tests/test-utils/helpers'
 
 const addTransaction = vi.fn()
 
@@ -23,15 +23,15 @@ describe('TransactionForm', () => {
   })
 
   it('submits form with valid data', async () => {
-    render(<TransactionForm addTransaction={addTransaction} />)
+    const { user } = setup(<TransactionForm addTransaction={addTransaction} />)
 
-    await userEvent.type(screen.getByLabelText(/from/i), mock.ADDRESS_ALICE)
-    await userEvent.type(screen.getByLabelText(/recipient/i), mock.ADDRESS_BOB)
-    await userEvent.type(screen.getByLabelText(/value/i), '500')
-    await userEvent.type(screen.getByLabelText(/message/i), mock.MESSAGE)
-    await userEvent.type(screen.getByLabelText(/data/i), mock.DATA_STRING)
+    await user.type(screen.getByLabelText(/from/i), mock.ADDRESS_ALICE)
+    await user.type(screen.getByLabelText(/recipient/i), mock.ADDRESS_BOB)
+    await user.type(screen.getByLabelText(/value/i), '500')
+    await user.type(screen.getByLabelText(/message/i), mock.MESSAGE)
+    await user.type(screen.getByLabelText(/data/i), mock.DATA_STRING)
 
-    await userEvent.click(screen.getByRole('button', { name: /send/i }))
+    await user.click(screen.getByRole('button', { name: /send/i }))
 
     expect(addTransaction).toHaveBeenCalledTimes(1)
     expect(addTransaction).toHaveBeenCalledWith({
@@ -44,9 +44,9 @@ describe('TransactionForm', () => {
   })
 
   it('generates a mock transaction', async () => {
-    render(<TransactionForm addTransaction={addTransaction} />)
+    const { user } = setup(<TransactionForm addTransaction={addTransaction} />)
 
-    await userEvent.click(screen.getByRole('button', { name: /generate/i }))
+    await user.click(screen.getByRole('button', { name: /generate/i }))
 
     expect(addTransaction).toHaveBeenCalledTimes(1)
     expect(addTransaction).toHaveBeenCalledWith({
@@ -59,8 +59,7 @@ describe('TransactionForm', () => {
   })
 
   it('validates fields correctly', async () => {
-    render(<TransactionForm addTransaction={addTransaction} />)
-    const user = userEvent.setup()
+    const { user } = setup(<TransactionForm addTransaction={addTransaction} />)
 
     const fromInput = screen.getByLabelText(/from/i)
     const recipientInput = screen.getByLabelText(/recipient/i)

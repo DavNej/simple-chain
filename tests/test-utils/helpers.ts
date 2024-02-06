@@ -2,6 +2,16 @@ import Transaction from '@/lib/chain/transaction'
 import { TransactionArgsType } from '@/lib/chain/types'
 import mock from './mock'
 
+import userEvent from '@testing-library/user-event'
+import { render } from '@testing-library/react'
+
+export function setup(jsx: React.ReactElement) {
+  return {
+    user: userEvent.setup(),
+    ...render(jsx),
+  }
+}
+
 export function buildTransaction(
   transactionArgs: TransactionArgsType = mock.TRANSACTION_ARGS_1,
 ) {

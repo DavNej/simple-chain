@@ -1,9 +1,8 @@
-import { fireEvent, render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import { render, screen } from '@testing-library/react'
 import TransactionsTable from '@/components/TransactionsTable/TransactionsTable'
 import { columns } from '@/components/TransactionsTable/columns'
 import mock from 'tests/test-utils/mock'
-import { buildTransactionBatch } from 'tests/test-utils/helpers'
+import { buildTransactionBatch, setup } from 'tests/test-utils/helpers'
 
 const transactions = buildTransactionBatch()
 
@@ -50,7 +49,9 @@ describe('TransactionsTable', () => {
   })
 
   it('checks functionality of row selection checkbox', async () => {
-    render(<TransactionsTable columns={columns} data={transactions} />)
+    const { user } = setup(
+      <TransactionsTable columns={columns} data={transactions} />,
+    )
 
     const [firstRowCheckbox, secondRowCheckbox] = screen.getAllByRole(
       'checkbox',
@@ -59,7 +60,7 @@ describe('TransactionsTable', () => {
       },
     )
 
-    fireEvent.click(firstRowCheckbox)
+    await user.click(firstRowCheckbox)
 
     expect(firstRowCheckbox).toBeChecked()
     expect(secondRowCheckbox).not.toBeChecked()
@@ -72,7 +73,9 @@ describe('TransactionsTable', () => {
   })
 
   it('checks functionality of select all checkbox', async () => {
-    render(<TransactionsTable columns={columns} data={transactions} />)
+    const { user } = setup(
+      <TransactionsTable columns={columns} data={transactions} />,
+    )
 
     const rowCheckboxes = screen.getAllByRole('checkbox', {
       name: 'Select row',
@@ -86,7 +89,7 @@ describe('TransactionsTable', () => {
       name: 'Select all',
     })
 
-    fireEvent.click(selectAllCheckbox)
+    await user.click(selectAllCheckbox)
 
     rowCheckboxes.forEach(checkbox => {
       expect(checkbox).toBeChecked()
@@ -94,3 +97,4 @@ describe('TransactionsTable', () => {
       expect(row).toHaveAttribute('data-state', 'selected')
     })
   })
+})
