@@ -92,4 +92,10 @@ export function buildTransactionBatch(
     ...Transaction[],
   ]
 }
+
+export function buildBlock(blockArgs: BlockArgsType = BLOCK_ARGS) {
+  vi.useFakeTimers().setSystemTime(new Date(SYSTEM_DATE))
+  const block = new Block(blockArgs)
+  vi.useRealTimers()
+  return block
 }
