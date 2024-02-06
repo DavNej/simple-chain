@@ -1,3 +1,4 @@
+import { SHA256 } from 'crypto-js'
 import type { TransactionArgsType } from './types'
 
 export default class Transaction {
@@ -7,6 +8,7 @@ export default class Transaction {
   data: string | null
   message: string | null
   createdAt: number
+  hash: string
 
   constructor({ from, to, value, data, message }: TransactionArgsType) {
     this.from = from
@@ -15,5 +17,23 @@ export default class Transaction {
     this.data = data || null
     this.message = message || null
     this.createdAt = Date.now()
+    this.hash = this.calculateHash()
+  }
+
+  calculateHash() {
+    return SHA256(
+      [
+        this.from,
+        this.to,
+        this.value,
+        this.data,
+        this.message,
+        this.createdAt,
+      ].join(''),
+    ).toString()
+  }
+
+  verify() {
+    return this.hash === this.calculateHash()
   }
 }
