@@ -1,8 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import TransactionsTable from '@/components/TransactionsTable/TransactionsTable'
 import { columns } from '@/components/TransactionsTable/columns'
-import mock from 'tests/test-utils/mock'
-import { buildTransactionBatch, setup } from 'tests/test-utils/helpers'
+import { mock, buildTransactionBatch, setup } from 'tests/test-utils/helpers'
 
 const transactions = buildTransactionBatch()
 
@@ -19,17 +18,21 @@ describe('TransactionsTable', () => {
     expect(screen.getByText('Created at')).toBeInTheDocument()
 
     // Check for presence of table rows corresponding to the mock data
-    expect(screen.getByText(mock.TRANSACTION_1.from)).toBeInTheDocument()
-    expect(screen.getByText(mock.TRANSACTION_1.to)).toBeInTheDocument()
-    expect(screen.getByText(mock.TRANSACTION_1.value)).toBeInTheDocument()
-    expect(screen.getByText(mock.TRANSACTION_1.message!)).toBeInTheDocument()
-    expect(screen.getByText(mock.TRANSACTION_1.data!)).toBeInTheDocument()
+    expect(screen.getByText(mock.TRANSACTION_ARGS_1.from)).toBeInTheDocument()
+    expect(screen.getByText(mock.TRANSACTION_ARGS_1.to)).toBeInTheDocument()
+    expect(screen.getByText(mock.TRANSACTION_ARGS_1.value)).toBeInTheDocument()
+    expect(screen.getByText(mock.TRANSACTION_ARGS_1.data!)).toBeInTheDocument()
+    expect(
+      screen.getByText(mock.TRANSACTION_ARGS_1.message!),
+    ).toBeInTheDocument()
 
-    expect(screen.getByText(mock.TRANSACTION_2.from)).toBeInTheDocument()
-    expect(screen.getByText(mock.TRANSACTION_2.to)).toBeInTheDocument()
-    expect(screen.getByText(mock.TRANSACTION_2.value)).toBeInTheDocument()
-    expect(screen.getByText(mock.TRANSACTION_2.message!)).toBeInTheDocument()
-    expect(screen.getByText(mock.TRANSACTION_2.data!)).toBeInTheDocument()
+    expect(screen.getByText(mock.TRANSACTION_ARGS_2.from)).toBeInTheDocument()
+    expect(screen.getByText(mock.TRANSACTION_ARGS_2.to)).toBeInTheDocument()
+    expect(screen.getByText(mock.TRANSACTION_ARGS_2.value)).toBeInTheDocument()
+    expect(screen.getByText(mock.TRANSACTION_ARGS_2.data!)).toBeInTheDocument()
+    expect(
+      screen.getByText(mock.TRANSACTION_ARGS_2.message!),
+    ).toBeInTheDocument()
 
     expect(screen.getAllByText('01/01/24, 01:00:00')).toHaveLength(2)
   })

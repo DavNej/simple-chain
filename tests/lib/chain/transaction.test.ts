@@ -1,12 +1,10 @@
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect } from 'vitest'
 import Transaction from '@/lib/chain/transaction'
-import mock from 'tests/test-utils/mock'
+import { mock, buildTransaction } from 'tests/test-utils/helpers'
 
 describe('Transaction Class', () => {
   it('creates a valid transaction', () => {
-    vi.useFakeTimers().setSystemTime(new Date('2024-01-01'))
-    const transaction = new Transaction(mock.TRANSACTION_ARGS_1)
-    vi.useRealTimers()
+    const transaction = buildTransaction()
 
     expect(transaction).toBeInstanceOf(Transaction)
     expect(transaction.from).toBe(mock.TRANSACTION_ARGS_1.from)

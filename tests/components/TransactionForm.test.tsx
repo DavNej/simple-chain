@@ -1,8 +1,7 @@
 import { describe, it, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import { TransactionForm } from '@/components/TransactionForm'
-import mock from 'tests/test-utils/mock'
-import { setup } from 'tests/test-utils/helpers'
+import { mock, setup } from 'tests/test-utils/helpers'
 
 const addTransaction = vi.fn()
 
