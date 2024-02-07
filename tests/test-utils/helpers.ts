@@ -20,6 +20,8 @@ const MESSAGE = 'A simple message for a simple chain'
 const SYSTEM_DATE = '2024-01-01'
 const SYSTEM_TIMESTAMP = 1704067200000
 
+// * Transaction helpers
+
 const TRANSACTION_ARGS_1 = {
   from: ADDRESS_ALICE,
   to: ADDRESS_BOB,
@@ -35,12 +37,52 @@ const TRANSACTION_ARGS_2 = {
   message: 'Second tx message',
 }
 
+export function buildTransaction(transactionArgs?: TransactionArgsType) {
+  return new Transaction(transactionArgs || TRANSACTION_ARGS_1)
+}
+
+export function buildTransactionBatch(
+  transactionArgsArray?: TransactionArgsType[],
+) {
+  const args = transactionArgsArray || [TRANSACTION_ARGS_1, TRANSACTION_ARGS_2]
+
+  if (args.length === 0)
+    throw new Error(
+      'At least 1 Transaction is needed to make a transaction batch',
+    )
+
+  return args.map(txArgs => buildTransaction(txArgs)) as [
+    Transaction,
+    ...Transaction[],
+  ]
+}
+
+// * Block helpers
+
 const BLOCK_ARGS = {
-  index: 0,
+  index: 1,
   difficulty: 1,
   prevHash: HASH_1,
   message: 'Block message',
   transactions: buildTransactionBatch(),
+}
+
+export function buildBlock(blockArgs?: BlockArgsType) {
+  return new Block(
+    blockArgs || {
+      ...BLOCK_ARGS,
+      transactions: buildTransactionBatch(),
+    },
+  )
+}
+
+// * General helpers
+
+export function setup(jsx: React.ReactElement) {
+  return {
+    user: userEvent.setup(),
+    ...render(jsx),
+  }
 }
 
 export const mock = {
@@ -58,44 +100,4 @@ export const mock = {
   BLOCK_ARGS,
   SYSTEM_TIMESTAMP,
   SYSTEM_DATE,
-}
-
-export function setup(jsx: React.ReactElement) {
-  return {
-    user: userEvent.setup(),
-    ...render(jsx),
-  }
-}
-
-export function buildTransaction(
-  transactionArgs: TransactionArgsType = TRANSACTION_ARGS_1,
-) {
-  vi.useFakeTimers().setSystemTime(new Date(SYSTEM_DATE))
-  const transaction = new Transaction(transactionArgs)
-  vi.useRealTimers()
-  return transaction
-}
-
-export function buildTransactionBatch(
-  transactions: TransactionArgsType[] = [
-    TRANSACTION_ARGS_1,
-    TRANSACTION_ARGS_2,
-  ],
-) {
-  if (!transactions.length)
-    throw new Error(
-      'At least 1 Transaction is needed to make a transaction batch',
-    )
-
-  return transactions.map(tx => buildTransaction(tx)) as [
-    Transaction,
-    ...Transaction[],
-  ]
-}
-
-export function buildBlock(blockArgs: BlockArgsType = BLOCK_ARGS) {
-  vi.useFakeTimers().setSystemTime(new Date(SYSTEM_DATE))
-  const block = new Block(blockArgs)
-  vi.useRealTimers()
-  return block
 }

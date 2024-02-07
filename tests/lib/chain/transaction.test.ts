@@ -5,7 +5,9 @@ import { mock, buildTransaction } from 'tests/test-utils/helpers'
 
 describe('Transaction Class', () => {
   it('creates a valid transaction', () => {
+    vi.useFakeTimers().setSystemTime(new Date(mock.SYSTEM_DATE))
     const transaction = buildTransaction()
+    vi.useRealTimers()
 
     expect(transaction).toBeInstanceOf(Transaction)
     expect(transaction.from).toBe(mock.TRANSACTION_ARGS_1.from)
@@ -18,7 +20,7 @@ describe('Transaction Class', () => {
   })
 
   it('handles optional fields correctly', () => {
-    const transaction = new Transaction({
+    const transaction = buildTransaction({
       ...mock.TRANSACTION_ARGS_1,
       data: undefined,
       message: undefined,
@@ -28,14 +30,17 @@ describe('Transaction Class', () => {
   })
 
   it('calculate hash correctly', () => {
-    const transaction = new Transaction(mock.TRANSACTION_ARGS_1)
+    const transaction = buildTransaction()
     expect(transaction.calculateHash()).toBe(transaction.hash)
   })
 
   it('verify transaction correctly', () => {
-    const transaction = new Transaction(mock.TRANSACTION_ARGS_1)
+    const transaction = buildTransaction()
     expect(transaction.verify()).toBe(true)
+  })
 
+  it('verify fails if transaction is currupted', () => {
+    const transaction = buildTransaction()
     transaction.value = 52
     expect(transaction.verify()).toBe(false)
   })

@@ -1,13 +1,25 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { waitFor } from '@testing-library/react'
 import Block from '@/lib/chain/block'
 import { SHA256Regex } from '@/lib/schemas'
 import { mock, buildBlock } from 'tests/test-utils/helpers'
+import Transaction from '@/lib/chain/transaction'
 
 let block: Block
+let minedBlock: Block
+let corruptedBlock: Block
 
-beforeEach(() => {
+beforeAll(async () => {
+  vi.useFakeTimers().setSystemTime(new Date(mock.SYSTEM_DATE))
   block = buildBlock()
+
+  minedBlock = buildBlock()
+  await minedBlock.mine()
+
+  corruptedBlock = buildBlock()
+  await corruptedBlock.mine()
+  corruptedBlock.transactions[0].value += 52
+  vi.useRealTimers()
 })
 
 describe('Block Class', () => {
@@ -16,16 +28,20 @@ describe('Block Class', () => {
     expect(block.index).toBe(mock.BLOCK_ARGS.index)
     expect(block.difficulty).toBe(mock.BLOCK_ARGS.difficulty)
     expect(block.prevHash).toBe(mock.BLOCK_ARGS.prevHash)
-    expect(block.transactions).toEqual(mock.BLOCK_ARGS.transactions)
     expect(block.message).toBe(mock.BLOCK_ARGS.message)
     expect(block.createdAt).toBe(mock.SYSTEM_TIMESTAMP)
     expect(block.hash).toBeNull()
     expect(block.nonce).toBeNull()
+
+    expect(block.transactions).toHaveLength(2)
+    expect(block.transactions[0]).toBeInstanceOf(Transaction)
+    expect(block.transactions[0].createdAt).toBe(mock.SYSTEM_TIMESTAMP)
+    expect(block.transactions[1]).toBeInstanceOf(Transaction)
   })
 
   it('should correctly calculate merkel tree', () => {
-    const merkelRoot = block.calculateMerkelTree()
-    expect(merkelRoot).toMatchSnapshot()
+    const tree = block.calculateMerkelTree()
+    expect(tree).toMatchSnapshot()
   })
 
   it('should correctly calculate merkel root', () => {
@@ -40,7 +56,7 @@ describe('Block Class', () => {
       `[Error: nonce must be incremented]`,
     )
     expect(block.calculateHash(1)).toMatchInlineSnapshot(
-      `"8fd41283056becd44fca189002695e869d47a748f271852d184b5b1925cb2c01"`,
+      `"bf4acd3281cb433417cb4dafb6be65b83eff1248e621509175d5a0b2cbb9e0b8"`,
     )
     expect(block.hash).toBeNull() // only mining a block assigns a hash to it
     expect(block.nonce).toBeNull() // only mining a block assigns a nonce to it
@@ -57,15 +73,12 @@ describe('Block Class', () => {
   })
 
   it('should verify transactions', () => {
-    const isValid = block.verifyTransactions()
+    const isValid = minedBlock.verifyTransactions()
     expect(isValid).toBe(true)
   })
 
   it('should validate itself', () => {
-    waitFor(async () => {
-      await block.mine()
-      const isValid = block.verify()
-      expect(isValid).toBe(true)
-    })
+    const isValid = minedBlock.verify()
+    expect(isValid).toBe(true)
   })
 })

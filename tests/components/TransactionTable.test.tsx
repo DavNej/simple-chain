@@ -2,8 +2,15 @@ import { render, screen } from '@testing-library/react'
 import TransactionsTable from '@/components/TransactionsTable/TransactionsTable'
 import { columns } from '@/components/TransactionsTable/columns'
 import { mock, buildTransactionBatch, setup } from 'tests/test-utils/helpers'
+import Transaction from '@/lib/chain/transaction'
 
-const transactions = buildTransactionBatch()
+let transactions: Transaction[]
+
+beforeAll(() => {
+  vi.useFakeTimers().setSystemTime(new Date(mock.SYSTEM_DATE))
+  transactions = buildTransactionBatch()
+  vi.useRealTimers()
+})
 
 describe('TransactionsTable', () => {
   it('renders table with data correctly', () => {
