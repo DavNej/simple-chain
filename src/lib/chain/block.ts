@@ -34,7 +34,7 @@ export default class Block {
   }
 
   calculateMerkelTree() {
-    const leaves = this.transactions.map(tx => tx.hash)
+    const leaves = this.transactions.map(tx => tx.calculateHash())
     return new MerkleTree(leaves, SHA256)
   }
 
@@ -44,7 +44,7 @@ export default class Block {
   }
 
   calculateHash(nonce: number | null) {
-    if (nonce === null) throw new Error('nonce must be incremented')
+    if (nonce === null) throw new Error('nonce must be given a numerical value')
 
     return SHA256(
       [
@@ -60,7 +60,10 @@ export default class Block {
   }
 
   async mine() {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
+      if (this.nonce !== null || this.hash !== null)
+        reject('Block has already been mined')
+
       let nonce = 0
       let hash = this.calculateHash(nonce)
 

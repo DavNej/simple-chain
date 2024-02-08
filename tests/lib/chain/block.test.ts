@@ -53,7 +53,7 @@ describe('Block Class', () => {
 
   it('should correctly calculate hash', () => {
     expect(() => block.calculateHash(null)).toThrowErrorMatchingInlineSnapshot(
-      `[Error: nonce must be incremented]`,
+      `[Error: nonce must be given a numerical value]`,
     )
     expect(block.calculateHash(1)).toMatchInlineSnapshot(
       `"bf4acd3281cb433417cb4dafb6be65b83eff1248e621509175d5a0b2cbb9e0b8"`,
@@ -80,5 +80,36 @@ describe('Block Class', () => {
   it('should validate itself', () => {
     const isValid = minedBlock.verify()
     expect(isValid).toBe(true)
+  })
+
+  it('should fail to verify transactions of a corrupted block', () => {
+    const isValid = corruptedBlock.verifyTransactions()
+    expect(isValid).toBe(false)
+  })
+
+  it('should fail to mine a mined block', () => {
+    expect(async () => await minedBlock.mine()).rejects.toMatchInlineSnapshot(
+      `"Block has already been mined"`,
+    )
+  })
+
+  it('should fail to validate a corrupted block', () => {
+    const isValid = corruptedBlock.verify()
+    expect(isValid).toBe(false)
+  })
+
+  it('should fail to match merkle tree of a corrupted block', () => {
+    const tree = corruptedBlock.calculateMerkelTree()
+    expect(tree).not.toMatchSnapshot()
+  })
+
+  it('should fail to match merkle root of a corrupted block', () => {
+    const merkelRoot = block.calculateMerkelRoot()
+    const merkelRootCorrupted = corruptedBlock.calculateMerkelRoot()
+
+    expect(merkelRoot).toMatchInlineSnapshot(
+      `"0aabce409f427daabc4cb8073eda03aef2ed7c027ada2ef122b5cec37e9b2628"`,
+    )
+    expect(merkelRootCorrupted).not.toBe(merkelRoot)
   })
 })
