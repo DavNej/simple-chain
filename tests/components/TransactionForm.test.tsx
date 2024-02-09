@@ -3,6 +3,16 @@ import { render, screen } from '@testing-library/react'
 import { TransactionForm } from '@/components/TransactionForm'
 import { mock, setup } from 'tests/test-utils/helpers'
 
+vi.mock('@/lib/chain/utils', () => ({
+  generateTransactionArgs: vi.fn().mockReturnValueOnce({
+    from: '0x98bB108FEd80aDDB81c28f06d9c6BfDb587D1477',
+    to: '0xCF56e5B9fc34D8172aC6EB92034124fFBf24B69f',
+    value: 274726,
+    message: 'later nails remove father leaf',
+    data: '{\n  "molecular": "different",\n  "iron": "take"\n}',
+  }),
+}))
+
 const addTransaction = vi.fn()
 
 beforeEach(() => {
@@ -47,13 +57,13 @@ describe('TransactionForm', () => {
 
     await user.click(screen.getByRole('button', { name: /generate/i }))
 
-    expect(addTransaction).toHaveBeenCalledTimes(1)
-    expect(addTransaction).toHaveBeenCalledWith({
-      from: '0xA82486CF57F8d8F69f145CEF15474842a4dAB494',
-      to: '0x2324D956C733a3b017e340b3aDf77D88aD95b0f4',
-      value: 26,
-      data: '0x49cd30044788e2203795f6a82b34132910c928fab24c01e0797a37a69bab17bb878f693700000000000000000000000000000000000000000000000000000000031d22f90',
-      message: 'Hello world',
+    expect(addTransaction).toHaveBeenCalledOnce()
+    expect(addTransaction).toBeCalledWith({
+      from: '0x98bB108FEd80aDDB81c28f06d9c6BfDb587D1477',
+      to: '0xCF56e5B9fc34D8172aC6EB92034124fFBf24B69f',
+      value: 274726,
+      message: 'later nails remove father leaf',
+      data: '{\n  "molecular": "different",\n  "iron": "take"\n}',
     })
   })
 
