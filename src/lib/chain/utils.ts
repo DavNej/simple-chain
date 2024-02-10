@@ -2,7 +2,7 @@ import * as randomWords from 'random-words'
 import { generateAddress } from '../crypto'
 
 export function generateTransactionArgs() {
-  let message = randomWords.generate({ min: 1, max: 5, maxLength: 9 })
+  let message = randomWords.generate({ min: 2, max: 5, maxLength: 9 })
   if (typeof message !== 'string') message = message.join(' ')
 
   const data = (() => {

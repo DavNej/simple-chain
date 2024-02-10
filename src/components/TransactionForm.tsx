@@ -1,5 +1,6 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { Send, Sparkles } from 'lucide-react'
 import type { TransactionArgsType } from '@/lib/chain/types'
 import { transactionArgsSchema } from '@/lib/chain/schemas'
 import { Button } from '@/components/ui/button'
@@ -8,7 +9,6 @@ import { Input } from '@/components/ui/input'
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -24,6 +24,8 @@ import {
 } from '@/components/ui/card'
 import { generateTransactionArgs } from '@/lib/chain/utils'
 
+const defaultFormValues = generateTransactionArgs()
+
 export function TransactionForm({
   addTransaction,
 }: {
@@ -31,18 +33,18 @@ export function TransactionForm({
 }) {
   const form = useForm<TransactionArgsType>({
     resolver: zodResolver(transactionArgsSchema),
-    defaultValues: {
-      from: '',
-      to: '',
-      value: 0,
-      data: '',
-      message: '',
-    },
+    defaultValues: defaultFormValues,
   })
 
-  function generateTx() {
-    const transactionArgs = generateTransactionArgs()
-    addTransaction(transactionArgs)
+  function fillFields() {
+    const { from, to, value, message, data } = generateTransactionArgs()
+    form.clearErrors()
+
+    form.setValue('from', from)
+    form.setValue('to', to)
+    form.setValue('value', value)
+    form.setValue('message', message)
+    form.setValue('data', data)
   }
 
   function onSubmit(values: TransactionArgsType) {
@@ -67,10 +69,13 @@ export function TransactionForm({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>From</FormLabel>
+
                   <FormControl>
-                    <Input placeholder="0x..." {...field} />
+                    <Input
+                      placeholder="0x4196E2B8aadd802200773dF82Ac318EEbD1dDcD4"
+                      {...field}
+                    />
                   </FormControl>
-                  <FormDescription>Address of the emiter</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -82,9 +87,11 @@ export function TransactionForm({
                 <FormItem>
                   <FormLabel>Recipient</FormLabel>
                   <FormControl>
-                    <Input placeholder="0x..." {...field} />
+                    <Input
+                      placeholder="0x3fefCaA5aa169A63F4f3EFbf7192B65Ec8c1aB68"
+                      {...field}
+                    />
                   </FormControl>
-                  <FormDescription>Address of the recipient</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -99,11 +106,10 @@ export function TransactionForm({
                     <Input
                       type="number"
                       step="1"
-                      placeholder="100"
+                      placeholder="123456"
                       {...field}
                     />
                   </FormControl>
-                  <FormDescription>Amount to send</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -115,7 +121,10 @@ export function TransactionForm({
                 <FormItem>
                   <FormLabel>Message</FormLabel>
                   <FormControl>
-                    <Textarea placeholder="Enter message here" {...field} />
+                    <Textarea
+                      placeholder="Hey! I am sending you my name also"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -128,7 +137,7 @@ export function TransactionForm({
                 <FormItem>
                   <FormLabel>Data</FormLabel>
                   <FormControl>
-                    <Textarea placeholder="Enter data here" {...field} />
+                    <Textarea placeholder='{ "name": "John Doe" }' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -136,11 +145,18 @@ export function TransactionForm({
             />
           </CardContent>
           <CardFooter className="flex gap-4">
-            <Button type="submit" className="flex-1">
-              Send
+            <Button
+              type="button"
+              variant="outline"
+              className="flex-1"
+              onClick={fillFields}
+            >
+              <Sparkles className="mr-2 size-4" />
+              Auto fill
             </Button>
-            <Button type="button" className="flex-1" onClick={generateTx}>
-              Generate
+            <Button type="submit" className="flex-1">
+              <Send className="mr-2 size-4" />
+              Send
             </Button>
           </CardFooter>
         </form>

@@ -2,26 +2,29 @@ import { describe, it, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import { TransactionForm } from '@/components/TransactionForm'
 import { mock, setup } from 'tests/test-utils/helpers'
+import { generateTransactionArgs } from '@/lib/chain/utils'
 
 vi.mock('@/lib/chain/utils', () => ({
-  generateTransactionArgs: vi.fn().mockReturnValueOnce({
+  generateTransactionArgs: vi.fn().mockReturnValue({
     from: '0x98bB108FEd80aDDB81c28f06d9c6BfDb587D1477',
     to: '0xCF56e5B9fc34D8172aC6EB92034124fFBf24B69f',
     value: 274726,
     message: 'later nails remove father leaf',
-    data: '{\n  "molecular": "different",\n  "iron": "take"\n}',
+    data: '{ "molecular": "different", "iron": "take" }',
   }),
 }))
 
 const addTransaction = vi.fn()
 
 beforeEach(() => {
-  addTransaction.mockReset()
+  vi.clearAllMocks()
 })
 
 describe('TransactionForm', () => {
   it('renders form correctly', () => {
     render(<TransactionForm addTransaction={addTransaction} />)
+
+    expect(generateTransactionArgs).not.toHaveBeenCalled()
 
     expect(screen.getByLabelText(/from/i)).toBeInTheDocument()
     expect(screen.getByLabelText(/recipient/i)).toBeInTheDocument()
@@ -29,20 +32,37 @@ describe('TransactionForm', () => {
     expect(screen.getByLabelText(/message/i)).toBeInTheDocument()
     expect(screen.getByLabelText(/data/i)).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /send/i })).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: /auto fill/i }),
+    ).toBeInTheDocument()
   })
 
   it('submits form with valid data', async () => {
     const { user } = setup(<TransactionForm addTransaction={addTransaction} />)
 
-    await user.type(screen.getByLabelText(/from/i), mock.ADDRESS_ALICE)
-    await user.type(screen.getByLabelText(/recipient/i), mock.ADDRESS_BOB)
-    await user.type(screen.getByLabelText(/value/i), '500')
-    await user.type(screen.getByLabelText(/message/i), mock.MESSAGE)
-    await user.type(screen.getByLabelText(/data/i), mock.DATA_STRING)
+    const fromInput = screen.getByLabelText(/from/i)
+    await user.clear(fromInput)
+    await user.type(fromInput, mock.ADDRESS_ALICE)
+
+    const recipientInput = screen.getByLabelText(/recipient/i)
+    await user.clear(recipientInput)
+    await user.type(recipientInput, mock.ADDRESS_BOB)
+
+    const valueInput = screen.getByLabelText(/value/i)
+    await user.clear(valueInput)
+    await user.type(valueInput, '500')
+
+    const messageInput = screen.getByLabelText(/message/i)
+    await user.clear(messageInput)
+    await user.type(messageInput, mock.MESSAGE)
+
+    const dataInput = screen.getByLabelText(/data/i)
+    await user.clear(dataInput)
+    await user.type(dataInput, mock.DATA_STRING)
 
     await user.click(screen.getByRole('button', { name: /send/i }))
 
-    expect(addTransaction).toHaveBeenCalledTimes(1)
+    expect(addTransaction).toHaveBeenCalledOnce()
     expect(addTransaction).toHaveBeenCalledWith({
       from: mock.ADDRESS_ALICE,
       to: mock.ADDRESS_BOB,
@@ -52,19 +72,28 @@ describe('TransactionForm', () => {
     })
   })
 
-  it('generates a mock transaction', async () => {
+  it('auto fill the form', async () => {
     const { user } = setup(<TransactionForm addTransaction={addTransaction} />)
 
-    await user.click(screen.getByRole('button', { name: /generate/i }))
+    await user.click(screen.getByRole('button', { name: /auto fill/i }))
 
-    expect(addTransaction).toHaveBeenCalledOnce()
-    expect(addTransaction).toBeCalledWith({
-      from: '0x98bB108FEd80aDDB81c28f06d9c6BfDb587D1477',
-      to: '0xCF56e5B9fc34D8172aC6EB92034124fFBf24B69f',
-      value: 274726,
-      message: 'later nails remove father leaf',
-      data: '{\n  "molecular": "different",\n  "iron": "take"\n}',
-    })
+    // expect(generateTransactionArgs).toHaveBeenCalledTimes(0)
+
+    expect(
+      screen.getByDisplayValue('0x98bB108FEd80aDDB81c28f06d9c6BfDb587D1477'),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByDisplayValue('0xCF56e5B9fc34D8172aC6EB92034124fFBf24B69f'),
+    ).toBeInTheDocument()
+    expect(screen.getByDisplayValue(274726)).toBeInTheDocument()
+    expect(
+      screen.getByDisplayValue('later nails remove father leaf'),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByDisplayValue('{ "molecular": "different", "iron": "take" }'),
+    ).toBeInTheDocument()
+
+    expect(generateTransactionArgs).toHaveBeenCalledTimes(1)
   })
 
   it('validates fields correctly', async () => {
