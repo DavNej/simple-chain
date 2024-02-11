@@ -4,6 +4,7 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { Button } from '@/components/ui/button'
 
 import { CaretSortIcon } from '@radix-ui/react-icons'
+import { formatDate } from '@/lib/utils'
 
 export const columns: ColumnDef<Transaction>[] = [
   {
@@ -78,20 +79,10 @@ export const columns: ColumnDef<Transaction>[] = [
   {
     accessorKey: 'createdAt',
     header: 'Created at',
-    cell: ({ row }) => {
-      const formatter = new Intl.DateTimeFormat('en-US', {
-        year: '2-digit',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: false,
-      })
-
-      const date = formatter.format(row.getValue('createdAt'))
-
-      return <span className="whitespace-nowrap">{date}</span>
-    },
+    cell: ({ row }) => (
+      <span className="whitespace-nowrap">
+        {formatDate(row.getValue('createdAt'))}
+      </span>
+    ),
   },
 ]
