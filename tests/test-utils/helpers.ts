@@ -16,7 +16,7 @@ const HASH_1 =
   'de714b432e67914f78afc4586f41c9e6879fce6716244dcfa1a84eb4ad619f73'
 const HASH_2 =
   '798ab96122c0a285c436cc7359c7dd2f84c697e45605ecbf6b9389f812ec65ee'
-const MESSAGE = 'A simple message for a simple chain'
+const MESSAGE = 'This is a simple chain'
 const SYSTEM_DATE = '2024-01-01'
 const SYSTEM_TIMESTAMP = 1704067200000
 
@@ -27,14 +27,14 @@ const TRANSACTION_ARGS_1 = {
   to: ADDRESS_BOB,
   value: 100,
   data: DATA_JSON,
-  message: 'First tx message',
+  message: 'This is the First tx',
 }
 const TRANSACTION_ARGS_2 = {
   from: ADDRESS_CHARLES,
   to: ADDRESS_DAVID,
   value: 200,
   data: DATA_STRING,
-  message: 'Second tx message',
+  message: 'This is the Second tx',
 }
 
 export function buildTransaction(transactionArgs?: TransactionArgsType) {

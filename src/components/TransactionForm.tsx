@@ -52,11 +52,12 @@ export function TransactionForm({
   }
 
   return (
-    <Card className="w-full">
+    <Card>
       <CardHeader>
-        <CardTitle>Create a transaction</CardTitle>
+        <CardTitle>New transaction</CardTitle>
         <CardDescription>
-          Fill in the form to create a transaction
+          Fill in the form to create a transaction then click the send button to
+          broacast it
         </CardDescription>
       </CardHeader>
 
@@ -137,7 +138,11 @@ export function TransactionForm({
                 <FormItem>
                   <FormLabel>Data</FormLabel>
                   <FormControl>
-                    <Textarea placeholder='{ "name": "John Doe" }' {...field} />
+                    <Textarea
+                      className="h-[130px]"
+                      placeholder='{ "name": "John Doe" }'
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -152,7 +157,7 @@ export function TransactionForm({
               onClick={fillFields}
             >
               <Sparkles className="mr-2 size-4" />
-              Auto fill
+              Randomize
             </Button>
             <Button type="submit" className="flex-1">
               <Send className="mr-2 size-4" />

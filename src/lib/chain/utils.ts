@@ -23,7 +23,7 @@ export function generateTransactionArgs() {
   return {
     from: generateAddress(),
     to: generateAddress(),
-    value: Math.floor(Math.random() * 1000000),
+    value: Math.floor(Math.random() * 1000),
     message,
     data,
   }

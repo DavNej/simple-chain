@@ -33,7 +33,7 @@ describe('TransactionForm', () => {
     expect(screen.getByLabelText(/data/i)).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /send/i })).toBeInTheDocument()
     expect(
-      screen.getByRole('button', { name: /auto fill/i }),
+      screen.getByRole('button', { name: /randomize/i }),
     ).toBeInTheDocument()
   })
 
@@ -72,10 +72,10 @@ describe('TransactionForm', () => {
     })
   })
 
-  it('auto fill the form', async () => {
+  it('randomize the form', async () => {
     const { user } = setup(<TransactionForm addTransaction={addTransaction} />)
 
-    await user.click(screen.getByRole('button', { name: /auto fill/i }))
+    await user.click(screen.getByRole('button', { name: /randomize/i }))
 
     // expect(generateTransactionArgs).toHaveBeenCalledTimes(0)
 
