@@ -19,6 +19,15 @@ export function formatDate(date: number | Date) {
   return formatter.format(date)
 }
 
+export function stringToHex(str: string) {
+  return (
+    '0x' +
+    Array.from(str)
+      .map(c => c.charCodeAt(0).toString(16).padStart(2, '0'))
+      .join('')
+  )
+}
+
 export function hexToString(hex: string) {
   let str = ''
 

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { AddressSchema, MessageSchema, SHA256Schema } from '@/lib/schemas'
+import { AddressSchema, MessageSchema, keccak256Schema } from '@/lib/schemas'
 import { mock } from 'tests/test-utils/helpers'
 
 describe('AddressSchema', () => {
@@ -10,44 +10,26 @@ describe('AddressSchema', () => {
   it('throws an error for invalid address', () => {
     expect(() => AddressSchema.parse('invalidAddress'))
       .toThrowErrorMatchingInlineSnapshot(`
-      [ZodError: [
-        {
-          "validation": "regex",
-          "code": "invalid_string",
-          "message": "Wrong format for address",
-          "path": []
-        },
-        {
-          "code": "too_small",
-          "minimum": 42,
-          "type": "string",
-          "inclusive": true,
-          "exact": true,
-          "message": "String must contain exactly 42 character(s)",
-          "path": []
-        }
-      ]]
-    `)
+        [ZodError: [
+          {
+            "validation": "regex",
+            "code": "invalid_string",
+            "message": "Wrong format for address",
+            "path": []
+          }
+        ]]
+      `)
     expect(() => AddressSchema.parse('0x123'))
       .toThrowErrorMatchingInlineSnapshot(`
-      [ZodError: [
-        {
-          "validation": "regex",
-          "code": "invalid_string",
-          "message": "Wrong format for address",
-          "path": []
-        },
-        {
-          "code": "too_small",
-          "minimum": 42,
-          "type": "string",
-          "inclusive": true,
-          "exact": true,
-          "message": "String must contain exactly 42 character(s)",
-          "path": []
-        }
-      ]]
-    `)
+        [ZodError: [
+          {
+            "validation": "regex",
+            "code": "invalid_string",
+            "message": "Wrong format for address",
+            "path": []
+          }
+        ]]
+      `)
     expect(() =>
       AddressSchema.parse('0x1234567890GHIJKL1234567890abcdef12345678'),
     ).toThrowErrorMatchingInlineSnapshot(`
@@ -68,15 +50,6 @@ describe('AddressSchema', () => {
           "validation": "regex",
           "code": "invalid_string",
           "message": "Wrong format for address",
-          "path": []
-        },
-        {
-          "code": "too_big",
-          "maximum": 42,
-          "type": "string",
-          "inclusive": true,
-          "exact": true,
-          "message": "String must contain exactly 42 character(s)",
           "path": []
         }
       ]]
@@ -111,34 +84,25 @@ describe('MessageSchema', () => {
   })
 })
 
-describe('SHA256Schema', () => {
-  it('validates valid SHA-256 hashes', () => {
-    expect(() => SHA256Schema.parse(mock.HASH_1)).not.toThrow()
+describe('keccak256Schema', () => {
+  it('validates valid keccak-256 hashes', () => {
+    expect(() => keccak256Schema.parse(mock.HASH_1)).not.toThrow()
   })
 
-  it('throws an error for invalid SHA-256 hashes', () => {
-    expect(() => SHA256Schema.parse('123456'))
+  it('throws an error for invalid keccak-256 hashes', () => {
+    expect(() => keccak256Schema.parse('123456'))
       .toThrowErrorMatchingInlineSnapshot(`
-      [ZodError: [
-        {
-          "validation": "regex",
-          "code": "invalid_string",
-          "message": "Wrong format for hash",
-          "path": []
-        },
-        {
-          "code": "too_small",
-          "minimum": 64,
-          "type": "string",
-          "inclusive": true,
-          "exact": true,
-          "message": "String must contain exactly 64 character(s)",
-          "path": []
-        }
-      ]]
-    `)
+        [ZodError: [
+          {
+            "validation": "regex",
+            "code": "invalid_string",
+            "message": "Wrong format for hash",
+            "path": []
+          }
+        ]]
+      `)
     expect(() =>
-      SHA256Schema.parse(
+      keccak256Schema.parse(
         'XYZ1234567890abcdef1234567890abcdef1234567890abcdef1234567890abc',
       ),
     ).toThrowErrorMatchingInlineSnapshot(`

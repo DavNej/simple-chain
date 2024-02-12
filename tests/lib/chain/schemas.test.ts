@@ -42,17 +42,6 @@ describe('transactionArgsSchema', () => {
           "path": [
             "from"
           ]
-        },
-        {
-          "code": "too_small",
-          "minimum": 42,
-          "type": "string",
-          "inclusive": true,
-          "exact": true,
-          "message": "String must contain exactly 42 character(s)",
-          "path": [
-            "from"
-          ]
         }
       ]]
     `)
@@ -67,17 +56,6 @@ describe('transactionArgsSchema', () => {
           "validation": "regex",
           "code": "invalid_string",
           "message": "Wrong format for address",
-          "path": [
-            "to"
-          ]
-        },
-        {
-          "code": "too_small",
-          "minimum": 42,
-          "type": "string",
-          "inclusive": true,
-          "exact": true,
-          "message": "String must contain exactly 42 character(s)",
           "path": [
             "to"
           ]
@@ -177,17 +155,6 @@ describe('blockArgsSchema', () => {
           "validation": "regex",
           "code": "invalid_string",
           "message": "Wrong format for hash",
-          "path": [
-            "prevHash"
-          ]
-        },
-        {
-          "code": "too_small",
-          "minimum": 64,
-          "type": "string",
-          "inclusive": true,
-          "exact": true,
-          "message": "String must contain exactly 64 character(s)",
           "path": [
             "prevHash"
           ]

@@ -1,12 +1,11 @@
 import { z } from 'zod'
 
 export const addressRegex = /^0x[a-fA-F0-9]{40}$/
-export const SHA256Regex = /^[a-fA-F0-9]{64}$/
+export const keccak256Regex = /^0x[a-fA-F0-9]{64}$/
 
 export const AddressSchema = z
   .string()
   .regex(addressRegex, { message: 'Wrong format for address' })
-  .length(42)
 
 export const MessageSchema = z.coerce
   .string()
@@ -15,7 +14,6 @@ export const MessageSchema = z.coerce
   })
   .optional()
 
-export const SHA256Schema = z
+export const keccak256Schema = z
   .string()
-  .regex(SHA256Regex, { message: 'Wrong format for hash' })
-  .length(64)
+  .regex(keccak256Regex, { message: 'Wrong format for hash' })

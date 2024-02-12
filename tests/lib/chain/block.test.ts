@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest'
 import { waitFor } from '@testing-library/react'
 import Block from '@/lib/chain/block'
-import { SHA256Regex } from '@/lib/schemas'
+import { keccak256Regex } from '@/lib/schemas'
 import { mock, buildBlock } from 'tests/test-utils/helpers'
 import Transaction from '@/lib/chain/transaction'
 
@@ -47,7 +47,7 @@ describe('Block Class', () => {
   it('should correctly calculate merkel root', () => {
     const merkelRoot = block.calculateMerkelRoot()
     expect(merkelRoot).toMatchInlineSnapshot(
-      `"0aabce409f427daabc4cb8073eda03aef2ed7c027ada2ef122b5cec37e9b2628"`,
+      `"859f814d92737c845b5a4d9c548a249def950abb1e0b7751960d90101a2157df"`,
     )
   })
 
@@ -56,7 +56,7 @@ describe('Block Class', () => {
       `[Error: nonce must be given a numerical value]`,
     )
     expect(block.calculateHash(1)).toMatchInlineSnapshot(
-      `"bf4acd3281cb433417cb4dafb6be65b83eff1248e621509175d5a0b2cbb9e0b8"`,
+      `"0x28408edf8d3fa8459741b397e5d3a2e3b7a6a2aa87feb0222aab59e570d58e17"`,
     )
     expect(block.hash).toBeNull() // only mining a block assigns a hash to it
     expect(block.nonce).toBeNull() // only mining a block assigns a nonce to it
@@ -65,7 +65,7 @@ describe('Block Class', () => {
   it('mines a block', () => {
     waitFor(async () => {
       const hash = await block.mine()
-      expect(block.hash).toMatch(SHA256Regex)
+      expect(block.hash).toMatch(keccak256Regex)
       expect(block.hash).toBe(hash)
       expect(block.hash!.startsWith('0'.repeat(block.difficulty))).toBe(true)
       expect(block.nonce).toBeInstanceOf(Number)
@@ -108,7 +108,7 @@ describe('Block Class', () => {
     const merkelRootCorrupted = corruptedBlock.calculateMerkelRoot()
 
     expect(merkelRoot).toMatchInlineSnapshot(
-      `"0aabce409f427daabc4cb8073eda03aef2ed7c027ada2ef122b5cec37e9b2628"`,
+      `"859f814d92737c845b5a4d9c548a249def950abb1e0b7751960d90101a2157df"`,
     )
     expect(merkelRootCorrupted).not.toBe(merkelRoot)
   })

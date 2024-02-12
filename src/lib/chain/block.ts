@@ -1,8 +1,7 @@
-import { SHA256 } from 'crypto-js'
 import { MerkleTree } from 'merkletreejs'
-
 import type Transaction from './transaction'
 import { BlockArgsType } from './types'
+import { keccak256, toUtf8Bytes } from 'ethers'
 
 export default class Block {
   index: number
@@ -35,7 +34,7 @@ export default class Block {
 
   calculateMerkelTree() {
     const leaves = this.transactions.map(tx => tx.calculateHash())
-    return new MerkleTree(leaves, SHA256)
+    return new MerkleTree(leaves, keccak256)
   }
 
   calculateMerkelRoot() {
@@ -46,17 +45,19 @@ export default class Block {
   calculateHash(nonce: number | null) {
     if (nonce === null) throw new Error('nonce must be given a numerical value')
 
-    return SHA256(
-      [
-        this.merkelRoot,
-        this.index,
-        this.createdAt,
-        this.difficulty,
-        this.prevHash,
-        nonce,
-        this.message,
-      ].join(''),
-    ).toString()
+    return keccak256(
+      toUtf8Bytes(
+        [
+          this.merkelRoot,
+          this.index,
+          this.createdAt,
+          this.difficulty,
+          this.prevHash,
+          nonce,
+          this.message,
+        ].join(''),
+      ),
+    )
   }
 
   async mine() {
