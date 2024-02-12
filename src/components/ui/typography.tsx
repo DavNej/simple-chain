@@ -25,3 +25,15 @@ export function H2(props: HeadingProps) {
     />
   )
 }
+
+export function H3(props: HeadingProps) {
+  return (
+    <h3
+      {...props}
+      className={cn(
+        'scroll-m-20 border-b pb-2 text-xl font-semibold tracking-tight first:mt-0',
+        props.className,
+      )}
+    />
+  )
+}
