@@ -1,8 +1,8 @@
-import { describe, it, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
-import { TransactionForm } from '@/components/TransactionForm'
-import { mock, setup } from 'tests/test-utils/helpers'
+import { describe, expect, it, vi } from 'vitest'
 import { generateTransactionArgs } from '@/lib/chain/utils'
+import { TransactionForm } from '@/components/TransactionForm'
+import { mock, setup } from '@/tests/test-utils/helpers'
 
 vi.mock('@/lib/chain/utils', () => ({
   generateTransactionArgs: vi.fn().mockReturnValue({

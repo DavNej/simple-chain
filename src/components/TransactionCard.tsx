@@ -1,9 +1,9 @@
 import React from 'react'
 import { toSvg } from 'jdenticon'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import type Transaction from '@/lib/chain/transaction'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { formatDate, hexToString } from '@/lib/utils'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 function Item({ label, value }: { label: string; value: string | number }) {
   return (

@@ -1,6 +1,6 @@
-import { describe, it, expect } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { formatDate } from '@/lib/utils'
-import { mock } from 'tests/test-utils/helpers'
+import { mock } from '@/tests/test-utils/helpers'
 
 describe('formatDate', () => {
   it('should correctly format a given Date object', () => {

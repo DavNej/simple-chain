@@ -1,9 +1,9 @@
-import { describe, it, expect, vi } from 'vitest'
 import { waitFor } from '@testing-library/react'
+import { describe, expect, it, vi } from 'vitest'
 import Block from '@/lib/chain/block'
-import { keccak256Regex } from '@/lib/schemas'
-import { mock, buildBlock } from 'tests/test-utils/helpers'
 import Transaction from '@/lib/chain/transaction'
+import { keccak256Regex } from '@/lib/schemas'
+import { buildBlock, mock } from '@/tests/test-utils/helpers'
 
 let block: Block
 let minedBlock: Block

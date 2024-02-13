@@ -1,9 +1,8 @@
+import { render } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import Block from '@/lib/chain/block'
 import Transaction from '@/lib/chain/transaction'
 import { BlockArgsType, TransactionArgsType } from '@/lib/chain/types'
-
-import userEvent from '@testing-library/user-event'
-import { render } from '@testing-library/react'
-import Block from '@/lib/chain/block'
 
 const ADDRESS_ALICE = '0x1234567890123456789012345678901234567aaa'
 const ADDRESS_BOB = '0x1234567890123456789012345678901234567bbb'

@@ -1,3 +1,4 @@
+import Transaction from '@/lib/chain/transaction'
 import {
   Card,
   CardContent,
@@ -5,9 +6,8 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import Transaction from '@/lib/chain/transaction'
-import TransactionCard from './TransactionCard'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import TransactionCard from './TransactionCard'
 
 export default function Mempool({
   transactions,

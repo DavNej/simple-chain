@@ -1,6 +1,6 @@
 import * as z from 'zod'
-import Transaction from './transaction'
 import { AddressSchema, MessageSchema, keccak256Schema } from '@/lib/schemas'
+import Transaction from './transaction'
 
 export const transactionArgsSchema = z.object({
   from: AddressSchema,

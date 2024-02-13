@@ -12,7 +12,7 @@
     "test": "vitest",
     "test:coverage": "vitest --coverage",
     "test:ui": "vitest --ui",
-    "lint": "eslint src --max-warnings=0",
+    "lint": "eslint src --max-warnings=0 --ignore-path .gitignore --fix",
     "format": "prettier --write .",
     "typecheck": "tsc --project tsconfig.json --noEmit",
     "validate": "bun run typecheck && bun run format && bun run lint"
@@ -46,6 +46,7 @@
     "@testing-library/jest-dom": "^6.3.0",
     "@testing-library/react": "^14.1.2",
     "@testing-library/user-event": "^14.5.2",
+    "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "@types/crypto-js": "^4.2.2",
     "@types/node": "^20.11.7",
     "@types/react": "^18.0.27",

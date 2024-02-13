@@ -1,6 +1,6 @@
-import { describe, it, expect } from 'vitest'
-import { generateTransactionArgs } from '@/lib/chain/utils'
+import { describe, expect, it } from 'vitest'
 import { transactionArgsSchema } from '@/lib/chain/schemas'
+import { generateTransactionArgs } from '@/lib/chain/utils'
 
 describe('generateTransactionArgs', () => {
   it('should return an object with from, to, value, message, and data properties', () => {

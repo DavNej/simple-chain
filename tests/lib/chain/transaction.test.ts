@@ -1,7 +1,7 @@
-import { describe, it, expect } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import Transaction from '@/lib/chain/transaction'
 import { keccak256Regex } from '@/lib/schemas'
-import { mock, buildTransaction } from 'tests/test-utils/helpers'
+import { buildTransaction, mock } from '@/tests/test-utils/helpers'
 
 describe('Transaction Class', () => {
   it('creates a valid transaction', () => {

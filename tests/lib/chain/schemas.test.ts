@@ -1,6 +1,6 @@
-import { describe, it, expect } from 'vitest'
-import { transactionArgsSchema, blockArgsSchema } from '@/lib/chain/schemas'
-import { mock } from 'tests/test-utils/helpers'
+import { describe, expect, it } from 'vitest'
+import { blockArgsSchema, transactionArgsSchema } from '@/lib/chain/schemas'
+import { mock } from '@/tests/test-utils/helpers'
 
 describe('transactionArgsSchema', () => {
   it('validates valid data', () => {

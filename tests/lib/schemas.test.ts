@@ -1,6 +1,6 @@
-import { describe, it, expect } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { AddressSchema, MessageSchema, keccak256Schema } from '@/lib/schemas'
-import { mock } from 'tests/test-utils/helpers'
+import { mock } from '@/tests/test-utils/helpers'
 
 describe('AddressSchema', () => {
   it('validates valid address', () => {

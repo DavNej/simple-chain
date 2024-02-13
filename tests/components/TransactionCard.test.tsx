@@ -1,8 +1,8 @@
-import { describe, it, expect } from 'vitest'
 import { render, screen } from '@testing-library/react'
-import TransactionCard from '@/components/TransactionCard'
-import { buildTransaction } from 'tests/test-utils/helpers'
+import { describe, expect, it } from 'vitest'
 import { formatDate } from '@/lib/utils'
+import TransactionCard from '@/components/TransactionCard'
+import { buildTransaction } from '@/tests/test-utils/helpers'
 
 describe('TransactionCard', () => {
   it('renders correctly with given transaction details', () => {

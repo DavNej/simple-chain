@@ -1,7 +1,7 @@
+import { keccak256, toUtf8Bytes } from 'ethers'
 import { MerkleTree } from 'merkletreejs'
 import type Transaction from './transaction'
 import { BlockArgsType } from './types'
-import { keccak256, toUtf8Bytes } from 'ethers'
 
 export default class Block {
   index: number

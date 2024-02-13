@@ -1,10 +1,9 @@
+import { CaretSortIcon } from '@radix-ui/react-icons'
 import { ColumnDef } from '@tanstack/react-table'
 import Transaction from '@/lib/chain/transaction'
-import { Checkbox } from '@/components/ui/checkbox'
-import { Button } from '@/components/ui/button'
-
-import { CaretSortIcon } from '@radix-ui/react-icons'
 import { formatDate } from '@/lib/utils'
+import { Button } from '@/components/ui/button'
+import { Checkbox } from '@/components/ui/checkbox'
 
 export const columns: ColumnDef<Transaction>[] = [
   {

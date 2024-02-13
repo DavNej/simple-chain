@@ -1,6 +1,6 @@
 import { keccak256, toUtf8Bytes } from 'ethers'
-import type { TransactionArgsType } from './types'
 import { stringToHex } from '@/lib/utils'
+import type { TransactionArgsType } from './types'
 
 export default class Transaction {
   from: string

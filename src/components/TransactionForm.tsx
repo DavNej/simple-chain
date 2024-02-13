@@ -1,19 +1,10 @@
-import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Send, Sparkles } from 'lucide-react'
-import type { TransactionArgsType } from '@/lib/chain/types'
+import { useForm } from 'react-hook-form'
 import { transactionArgsSchema } from '@/lib/chain/schemas'
+import type { TransactionArgsType } from '@/lib/chain/types'
+import { generateTransactionArgs } from '@/lib/chain/utils'
 import { Button } from '@/components/ui/button'
-import { Textarea } from '@/components/ui/textarea'
-import { Input } from '@/components/ui/input'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
 import {
   Card,
   CardContent,
@@ -22,7 +13,16 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { generateTransactionArgs } from '@/lib/chain/utils'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
 
 const defaultFormValues = generateTransactionArgs()
 

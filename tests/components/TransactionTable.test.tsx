@@ -1,8 +1,9 @@
 import { render, screen } from '@testing-library/react'
+import Transaction from '@/lib/chain/transaction'
+import { stringToHex } from '@/lib/utils'
 import TransactionsTable from '@/components/TransactionsTable/TransactionsTable'
 import { columns } from '@/components/TransactionsTable/columns'
-import { mock, buildTransactionBatch, setup } from 'tests/test-utils/helpers'
-import Transaction from '@/lib/chain/transaction'
+import { buildTransactionBatch, mock, setup } from '@/tests/test-utils/helpers'
 
 let transactions: Transaction[]
 
@@ -28,7 +29,9 @@ describe('TransactionsTable', () => {
     expect(screen.getByText(mock.TRANSACTION_ARGS_1.from)).toBeInTheDocument()
     expect(screen.getByText(mock.TRANSACTION_ARGS_1.to)).toBeInTheDocument()
     expect(screen.getByText(mock.TRANSACTION_ARGS_1.value)).toBeInTheDocument()
-    expect(screen.getByText(mock.TRANSACTION_ARGS_1.data!)).toBeInTheDocument()
+    expect(
+      screen.getByText(stringToHex(mock.TRANSACTION_ARGS_1.data!)),
+    ).toBeInTheDocument()
     expect(
       screen.getByText(mock.TRANSACTION_ARGS_1.message!),
     ).toBeInTheDocument()
@@ -36,7 +39,9 @@ describe('TransactionsTable', () => {
     expect(screen.getByText(mock.TRANSACTION_ARGS_2.from)).toBeInTheDocument()
     expect(screen.getByText(mock.TRANSACTION_ARGS_2.to)).toBeInTheDocument()
     expect(screen.getByText(mock.TRANSACTION_ARGS_2.value)).toBeInTheDocument()
-    expect(screen.getByText(mock.TRANSACTION_ARGS_2.data!)).toBeInTheDocument()
+    expect(
+      screen.getByText(stringToHex(mock.TRANSACTION_ARGS_2.data!)),
+    ).toBeInTheDocument()
     expect(
       screen.getByText(mock.TRANSACTION_ARGS_2.message!),
     ).toBeInTheDocument()
