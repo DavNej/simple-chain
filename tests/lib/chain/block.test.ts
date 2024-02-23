@@ -37,6 +37,10 @@ describe('Block Class', () => {
     expect(block.transactions[0]).toBeInstanceOf(Transaction)
     expect(block.transactions[0].createdAt).toBe(mock.SYSTEM_TIMESTAMP)
     expect(block.transactions[1]).toBeInstanceOf(Transaction)
+
+    block.transactions.forEach(tx => {
+      expect(tx.status).toBe('pending')
+    })
   })
 
   it('should correctly calculate merkel tree', () => {
@@ -69,6 +73,10 @@ describe('Block Class', () => {
       expect(block.hash).toBe(hash)
       expect(block.hash!.startsWith('0'.repeat(block.difficulty))).toBe(true)
       expect(block.nonce).toBeInstanceOf(Number)
+
+      block.transactions.forEach(tx => {
+        expect(tx.status).toBe('success')
+      })
     })
   })
 

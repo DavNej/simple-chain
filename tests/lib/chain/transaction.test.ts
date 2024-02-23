@@ -15,6 +15,7 @@ describe('Transaction Class', () => {
     expect(transaction.value).toBe(mock.TRANSACTION_ARGS_1.value)
     expect(transaction.message).toBe(mock.TRANSACTION_ARGS_1.message)
     expect(transaction.createdAt).toBe(mock.SYSTEM_TIMESTAMP)
+    expect(transaction.status).toBe('pending')
     expect(transaction.hash).toMatch(keccak256Regex)
     expect(transaction.data).toMatchInlineSnapshot(
       `"0x7b22666f6f223a22626172227d"`,
@@ -31,9 +32,21 @@ describe('Transaction Class', () => {
     expect(transaction.message).toBeNull()
   })
 
+  it('sets status correctly', () => {
+    const transaction = buildTransaction()
+    const newStatus = 'success'
+    transaction.setStatus(newStatus)
+    expect(transaction.status).toBe(newStatus)
+  })
+
   it('calculate hash correctly', () => {
     const transaction = buildTransaction()
-    expect(transaction.calculateHash()).toBe(transaction.hash)
+
+    const hash = transaction.calculateHash()
+    expect(hash).toBe(transaction.hash)
+
+    transaction.setStatus('success')
+    expect(transaction.calculateHash()).toBe(hash)
   })
 
   it('verify transaction correctly', () => {

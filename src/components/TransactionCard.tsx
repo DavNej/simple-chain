@@ -44,6 +44,7 @@ export default function TransactionCard({ tx }: { tx: Transaction }) {
         <Item label="From" value={tx.from} />
         <Item label="To" value={tx.to} />
         <Item label="Value" value={tx.value} />
+        <Item label="Status" value={tx.status} />
         <Item label="Date" value={formatDate(tx.createdAt)} />
         <Item label="Message" value={tx.message || ''} />
         <div className="flex items-baseline">

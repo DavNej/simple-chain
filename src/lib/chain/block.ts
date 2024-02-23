@@ -8,11 +8,11 @@ export default class Block {
   createdAt: number
   difficulty: number
   prevHash: string
-  hash: string | null
-  nonce: number | null
   message: string | null
   transactions: Transaction[]
   merkelRoot: string
+  hash: string | null = null
+  nonce: number | null = null
 
   constructor({
     index,
@@ -25,10 +25,8 @@ export default class Block {
     this.createdAt = Date.now()
     this.difficulty = difficulty
     this.prevHash = prevHash
-    this.nonce = null
     this.message = message || null
     this.transactions = transactions
-    this.hash = null
     this.merkelRoot = this.calculateMerkelRoot()
   }
 
@@ -74,6 +72,9 @@ export default class Block {
       }
       this.nonce = nonce
       this.hash = hash
+      this.transactions.forEach(tx => {
+        tx.setStatus('success')
+      })
       resolve(this.hash)
     })
   }
