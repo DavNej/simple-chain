@@ -6,7 +6,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { ScrollArea } from '@/components/ui/scroll-area'
 import TransactionCard from './TransactionCard'
 
 export default function Mempool({
@@ -28,12 +27,12 @@ export default function Mempool({
         </CardDescription>
       </CardHeader>
 
-      <CardContent className="flex-1">
-        <ScrollArea className="flex  h-[200px] flex-col gap-2">
+      <CardContent>
+        <div className="h-full space-y-2 overflow-y-scroll">
           {transactions.map(tx => (
             <TransactionCard key={tx.hash} tx={tx} />
           ))}
-        </ScrollArea>
+        </div>
       </CardContent>
     </Card>
   )

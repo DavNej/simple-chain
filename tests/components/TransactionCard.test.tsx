@@ -21,6 +21,8 @@ describe('TransactionCard', () => {
     expect(screen.getByText(mockTransaction.to)).toBeInTheDocument()
     expect(screen.getByText(/value/i)).toBeInTheDocument()
     expect(screen.getByText(mockTransaction.value)).toBeInTheDocument()
+    expect(screen.getByText(/status/i)).toBeInTheDocument()
+    expect(screen.getByText(mockTransaction.status)).toBeInTheDocument()
     expect(screen.getByText(/date/i)).toBeInTheDocument()
     expect(
       screen.getByText(formatDate(mockTransaction.createdAt)),

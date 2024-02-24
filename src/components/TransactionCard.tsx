@@ -8,8 +8,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 function Item({ label, value }: { label: string; value: string | number }) {
   return (
     <div className="flex items-baseline">
-      <span className="w-20 shrink-0 font-medium">{label}</span>
-      <span className="overflow-hidden text-ellipsis text-sm">{value}</span>
+      <span className="w-20 shrink-0 text-xs font-medium">{label}</span>
+      <span className="overflow-hidden text-ellipsis text-xs text-muted-foreground">
+        {value}
+      </span>
     </div>
   )
 }
@@ -40,7 +42,7 @@ export default function TransactionCard({ tx }: { tx: Transaction }) {
         </CardTitle>
       </CardHeader>
 
-      <CardContent>
+      <CardContent className="space-y-1">
         <Item label="From" value={tx.from} />
         <Item label="To" value={tx.to} />
         <Item label="Value" value={tx.value} />
@@ -48,9 +50,9 @@ export default function TransactionCard({ tx }: { tx: Transaction }) {
         <Item label="Date" value={formatDate(tx.createdAt)} />
         <Item label="Message" value={tx.message || ''} />
         <div className="flex items-baseline">
-          <span className="w-20 shrink-0 font-medium">Data</span>
+          <span className="w-20 shrink-0 text-xs font-medium">Data</span>
           <p
-            className="min-w-0 break-words text-sm"
+            className="min-w-0 break-words text-xs text-muted-foreground"
             onClick={() => {
               if (!tx.data) return
 

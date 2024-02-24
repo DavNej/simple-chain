@@ -16,14 +16,14 @@ export default function App() {
   }
 
   return (
-    <main className="p-8">
+    <main className="flex h-screen flex-col p-8">
       <Typography.H1 className="p-8 pt-0 text-center">
         Welcome to Simple chain 👋
       </Typography.H1>
 
       <Tabs
+        className="m-auto flex w-full flex-1 flex-col md:w-2/3 lg:w-1/2"
         defaultValue="create-transactions"
-        className="m-auto w-full md:w-1/2"
       >
         <TabsList className="w-full">
           <TabsTrigger value="create-transactions">
