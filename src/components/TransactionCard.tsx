@@ -1,7 +1,7 @@
 import React from 'react'
 import { toSvg } from 'jdenticon'
 import type Transaction from '@/lib/chain/transaction'
-import { formatDate, hexToString } from '@/lib/utils'
+import { cn, formatDate, hexToString } from '@/lib/utils'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
@@ -22,13 +22,24 @@ function svgSrcFromHashValue(hash: string, svgSize: number = 40) {
   return URL.createObjectURL(blob)
 }
 
-export default function TransactionCard({ tx }: { tx: Transaction }) {
+export default function TransactionCard({
+  tx,
+  onClick,
+  isSelected,
+}: {
+  tx: Transaction
+  onClick: (hash: string) => void
+  isSelected: boolean
+}) {
   const src = React.useRef(svgSrcFromHashValue(tx.hash))
   const decodedData = React.useRef<string | null>(null)
   const [isDecodedData, setIsDecodedData] = React.useState(false)
 
   return (
-    <Card>
+    <Card
+      onClick={() => onClick(tx.hash)}
+      className={cn(!isSelected && 'border-2 border-primary')}
+    >
       <CardHeader className="flex-row items-center gap-x-4">
         <Avatar className="bg-gray-200">
           <AvatarImage src={src.current} />
