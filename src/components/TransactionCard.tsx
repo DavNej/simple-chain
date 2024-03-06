@@ -38,7 +38,7 @@ export default function TransactionCard({
   return (
     <Card
       onClick={() => onClick(tx.hash)}
-      className={cn(!isSelected && 'border-2 border-primary')}
+      className={cn(isSelected && 'border-2 border-primary')}
     >
       <CardHeader className="flex-row items-center gap-x-4">
         <Avatar className="bg-gray-200">
