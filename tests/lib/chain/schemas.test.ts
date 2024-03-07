@@ -249,7 +249,18 @@ describe('blockArgsSchema', () => {
     `)
   })
 
-  it('throws an error for empty transaction array', () => {
+  it('allows empty transactions only for Genesis block', () => {
+    const genesisBlockArgs = {
+      index: 0,
+      difficulty: 0,
+      prevHash:
+        '0x0000000000000000000000000000000000000000000000000000000000000000',
+      message: 'I am THE genesis block 💫',
+      transactions: [],
+    }
+
+    expect(() => blockArgsSchema.parse(genesisBlockArgs)).not.toThrow()
+
     expect(() =>
       blockArgsSchema.parse({
         ...mock.BLOCK_ARGS,
@@ -258,15 +269,9 @@ describe('blockArgsSchema', () => {
     ).toThrowErrorMatchingInlineSnapshot(`
       [ZodError: [
         {
-          "code": "too_small",
-          "minimum": 1,
-          "type": "array",
-          "inclusive": true,
-          "exact": false,
-          "message": "Array must contain at least 1 element(s)",
-          "path": [
-            "transactions"
-          ]
+          "code": "custom",
+          "message": "Transactions can be empty only for Genesis block",
+          "path": []
         }
       ]]
     `)

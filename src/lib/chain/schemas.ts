@@ -10,10 +10,14 @@ export const transactionArgsSchema = z.object({
   message: MessageSchema,
 })
 
-export const blockArgsSchema = z.object({
-  index: z.number().int().nonnegative(),
-  difficulty: z.number().int().nonnegative().lte(32).default(0),
-  prevHash: keccak256Schema,
-  message: MessageSchema,
-  transactions: z.instanceof(Transaction).array().nonempty(),
-})
+export const blockArgsSchema = z
+  .object({
+    index: z.number().int().nonnegative(),
+    difficulty: z.number().int().nonnegative().lte(32).default(0),
+    prevHash: keccak256Schema,
+    message: MessageSchema,
+    transactions: z.instanceof(Transaction).array(),
+  })
+  .refine(data => (data.transactions.length === 0 ? data.index === 0 : true), {
+    message: 'Transactions can be empty only for Genesis block',
+  })
