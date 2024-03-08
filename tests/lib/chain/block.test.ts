@@ -39,6 +39,8 @@ describe('Block Class', () => {
     expect(block.transactions[1]).toBeInstanceOf(Transaction)
 
     block.transactions.forEach(tx => {
+      expect(tx.block).toBe(block.index)
+      expect(tx.hash).toMatch(keccak256Regex)
       expect(tx.status).toBe('pending')
     })
   })
@@ -46,12 +48,17 @@ describe('Block Class', () => {
   it('should correctly calculate merkel tree', () => {
     const tree = block.calculateMerkelTree()
     expect(tree).toMatchSnapshot()
+
+    block.transactions.forEach(tx => {
+      expect(tx.block).toBe(block.index)
+      expect(tx.hash).toMatch(keccak256Regex)
+    })
   })
 
   it('should correctly calculate merkel root', () => {
     const merkelRoot = block.calculateMerkelRoot()
     expect(merkelRoot).toMatchInlineSnapshot(
-      `"859f814d92737c845b5a4d9c548a249def950abb1e0b7751960d90101a2157df"`,
+      `"1a17e0cc135680a1bc5790e3d235530ffe7608d3e3894a9e49923ee796e29e1d"`,
     )
   })
 
@@ -60,7 +67,7 @@ describe('Block Class', () => {
       `[Error: nonce must be given a numerical value]`,
     )
     expect(block.calculateHash(1)).toMatchInlineSnapshot(
-      `"0x28408edf8d3fa8459741b397e5d3a2e3b7a6a2aa87feb0222aab59e570d58e17"`,
+      `"0xc117d08b26b1957e3bda02e69f3f9a34df88e061a050358ae777f31f6566cff4"`,
     )
     expect(block.hash).toBeNull() // only mining a block assigns a hash to it
     expect(block.nonce).toBeNull() // only mining a block assigns a nonce to it
@@ -95,9 +102,17 @@ describe('Block Class', () => {
     expect(isValid).toBe(false)
   })
 
-  it('should fail to mine a mined block', () => {
-    expect(async () => await minedBlock.mine()).rejects.toMatchInlineSnapshot(
+  it('should fail to mine a mined block', async () => {
+    await expect(minedBlock.mine()).rejects.toMatchInlineSnapshot(
       `"Block has already been mined"`,
+    )
+  })
+
+  it("rejects if the block's transactions are invalid", async () => {
+    const _block = buildBlock()
+    _block.transactions[0].value += 52 // corrupt the transaction
+    await expect(_block.mine()).rejects.toEqual(
+      "Block's Transactions are invalid",
     )
   })
 
@@ -116,7 +131,7 @@ describe('Block Class', () => {
     const merkelRootCorrupted = corruptedBlock.calculateMerkelRoot()
 
     expect(merkelRoot).toMatchInlineSnapshot(
-      `"859f814d92737c845b5a4d9c548a249def950abb1e0b7751960d90101a2157df"`,
+      `"1a17e0cc135680a1bc5790e3d235530ffe7608d3e3894a9e49923ee796e29e1d"`,
     )
     expect(merkelRootCorrupted).not.toBe(merkelRoot)
   })

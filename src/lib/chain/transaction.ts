@@ -5,13 +5,14 @@ import type { TransactionArgsType } from './types'
 type Status = 'pending' | 'success' | 'reverted'
 
 export default class Transaction {
+  block: number | null
   from: string
   to: string
   value: number
   data: string | null
   message: string | null
   createdAt: number
-  hash: string
+  hash: string | null
   status: Status
 
   constructor({ from, to, value, data, message }: TransactionArgsType) {
@@ -22,13 +23,15 @@ export default class Transaction {
     this.status = 'pending'
     this.message = message || null
     this.createdAt = Date.now()
-    this.hash = this.calculateHash()
+    this.hash = null
+    this.block = null
   }
 
   calculateHash() {
     return keccak256(
       toUtf8Bytes(
         [
+          this.block,
           this.data,
           this.from,
           this.to,
@@ -40,7 +43,17 @@ export default class Transaction {
     )
   }
 
+  addToBlock(block: number) {
+    this.block = block
+    this.hash = this.calculateHash()
+    return this.hash
+  }
+
   verify() {
+    if (this.block === null) {
+      throw new Error('Block number is not set')
+    }
+
     return this.hash === this.calculateHash()
   }
 

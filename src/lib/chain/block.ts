@@ -31,7 +31,7 @@ export default class Block {
   }
 
   calculateMerkelTree() {
-    const leaves = this.transactions.map(tx => tx.calculateHash())
+    const leaves = this.transactions.map(tx => tx.addToBlock(this.index))
     return new MerkleTree(leaves, keccak256)
   }
 
@@ -63,6 +63,8 @@ export default class Block {
       if (this.nonce !== null || this.hash !== null)
         reject('Block has already been mined')
 
+      if (!this.verifyTransactions()) reject("Block's Transactions are invalid")
+
       let nonce = 0
       let hash = this.calculateHash(nonce)
 
@@ -84,6 +86,7 @@ export default class Block {
 
     const tree = this.calculateMerkelTree()
     const isValid = this.transactions.every(tx => {
+      if (!tx.hash) return false
       const proof = tree.getProof(tx.hash)
       return tree.verify(proof, tx.hash, tree.getRoot())
     })
