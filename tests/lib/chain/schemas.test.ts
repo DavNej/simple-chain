@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import { genesisBlockArgs } from '@/lib/chain/chain'
 import { blockArgsSchema, transactionArgsSchema } from '@/lib/chain/schemas'
 import { mock } from '@/tests/test-utils/helpers'
 
@@ -250,15 +251,6 @@ describe('blockArgsSchema', () => {
   })
 
   it('allows empty transactions only for Genesis block', () => {
-    const genesisBlockArgs = {
-      index: 0,
-      difficulty: 0,
-      prevHash:
-        '0x0000000000000000000000000000000000000000000000000000000000000000',
-      message: 'I am THE genesis block 💫',
-      transactions: [],
-    }
-
     expect(() => blockArgsSchema.parse(genesisBlockArgs)).not.toThrow()
 
     expect(() =>
