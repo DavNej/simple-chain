@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react'
+import { type RenderOptions, render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import Block from '@/lib/chain/block'
 import Transaction from '@/lib/chain/transaction'
@@ -27,6 +27,7 @@ const TRANSACTION_ARGS_1 = {
   data: DATA_JSON,
   message: 'This is the First tx',
 }
+
 const TRANSACTION_ARGS_2 = {
   from: ADDRESS_CHARLES,
   to: ADDRESS_DAVID,
@@ -49,10 +50,7 @@ export function buildTransactionBatch(
       'At least 1 Transaction is needed to make a transaction batch',
     )
 
-  return args.map(txArgs => buildTransaction(txArgs)) as [
-    Transaction,
-    ...Transaction[],
-  ]
+  return args.map(txArgs => buildTransaction(txArgs))
 }
 
 // * Block helpers
@@ -66,20 +64,15 @@ const BLOCK_ARGS = {
 }
 
 export function buildBlock(blockArgs?: BlockArgsType) {
-  return new Block(
-    blockArgs || {
-      ...BLOCK_ARGS,
-      transactions: buildTransactionBatch(),
-    },
-  )
+  return new Block(blockArgs || BLOCK_ARGS)
 }
 
 // * General helpers
 
-export function setup(jsx: React.ReactElement) {
+export function setup(jsx: React.ReactElement, options?: RenderOptions) {
   return {
     user: userEvent.setup(),
-    ...render(jsx),
+    ...render(jsx, options),
   }
 }
 
