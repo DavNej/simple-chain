@@ -20,6 +20,7 @@
     "paths": {
       "@/*": ["./src/*"],
       "@/tests/*": ["./tests/*"],
+      "@/ui/*": ["./src/components/ui/*"]
     }
   },
   "include": ["src", "tests"],
