@@ -256,7 +256,7 @@ describe('blockArgsSchema', () => {
     expect(() =>
       blockArgsSchema.parse({
         ...mock.BLOCK_ARGS,
-        transactions: [],
+        transactions: new Map(),
       }),
     ).toThrowErrorMatchingInlineSnapshot(`
       [ZodError: [

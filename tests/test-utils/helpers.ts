@@ -2,7 +2,11 @@ import { type RenderOptions, render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import Block from '@/lib/chain/block'
 import Transaction from '@/lib/chain/transaction'
-import { BlockArgsType, TransactionArgsType } from '@/lib/chain/types'
+import {
+  BlockArgsType,
+  TransactionArgsType,
+  TransactionMapType,
+} from '@/lib/chain/types'
 
 const ADDRESS_ALICE = '0x1234567890123456789012345678901234567aaa'
 const ADDRESS_BOB = '0x1234567890123456789012345678901234567bbb'
@@ -40,7 +44,7 @@ export function buildTransaction(transactionArgs?: TransactionArgsType) {
   return new Transaction(transactionArgs || TRANSACTION_ARGS_1)
 }
 
-export function buildTransactionBatch(
+export function buildTransactionMap(
   transactionArgsArray?: TransactionArgsType[],
 ) {
   const args = transactionArgsArray || [TRANSACTION_ARGS_1, TRANSACTION_ARGS_2]
@@ -50,7 +54,12 @@ export function buildTransactionBatch(
       'At least 1 Transaction is needed to make a transaction batch',
     )
 
-  return args.map(txArgs => buildTransaction(txArgs))
+  return new Map(
+    args.map(txArgs => {
+      const tx = buildTransaction(txArgs)
+      return [tx.calculateHash(), tx]
+    }),
+  ) as TransactionMapType
 }
 
 // * Block helpers
@@ -60,7 +69,7 @@ const BLOCK_ARGS = {
   difficulty: 1,
   prevHash: HASH_1,
   message: 'Block message',
-  transactions: buildTransactionBatch(),
+  transactions: buildTransactionMap(),
 }
 
 export function buildBlock(blockArgs?: BlockArgsType) {
