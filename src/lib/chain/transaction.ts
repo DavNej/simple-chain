@@ -2,7 +2,7 @@ import { keccak256, toUtf8Bytes } from 'ethers'
 import { stringToHex } from '@/lib/utils'
 import type { TransactionArgsType } from './types'
 
-type Status = 'pending' | 'success' | 'reverted'
+type Status = 'pending' | 'success' | 'failed'
 
 export default class Transaction {
   block: number | null

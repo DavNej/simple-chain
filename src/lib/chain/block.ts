@@ -1,7 +1,6 @@
 import { keccak256, toUtf8Bytes } from 'ethers'
 import { MerkleTree } from 'merkletreejs'
-import type Transaction from './transaction'
-import { BlockArgsType } from './types'
+import type { BlockArgsType, TransactionMapType } from './types'
 
 export default class Block {
   index: number
@@ -9,10 +8,11 @@ export default class Block {
   difficulty: number
   prevHash: string
   message: string | null
-  transactions: Transaction[]
-  merkelRoot: string
+  transactions: TransactionMapType
+  merkelRoot: string | null = null
   hash: string | null = null
   nonce: number | null = null
+  private _tree: MerkleTree | null = null
 
   constructor({
     index,
@@ -27,22 +27,59 @@ export default class Block {
     this.prevHash = prevHash
     this.message = message || null
     this.transactions = transactions
-    this.merkelRoot = this.calculateMerkelRoot()
   }
 
-  calculateMerkelTree() {
-    const leaves = this.transactions.map(tx => tx.addToBlock(this.index))
-    return new MerkleTree(leaves, keccak256)
+  async mine() {
+    return new Promise((resolve, reject) => {
+      if (this.nonce !== null || this.hash !== null)
+        reject('Block has already been mined')
+
+      const transactions = new Map()
+
+      for (const tx of this.transactions.values()) {
+        const hash = tx.addToBlock(this.index)
+        transactions.set(hash, tx)
+      }
+
+      this.transactions = transactions
+      this._calculateMerkelTree(Array.from(transactions.keys()))
+
+      if (!this._verifyTransactions())
+        reject("Block's Transactions are invalid")
+
+      let nonce = 0
+      let hash = this._calculateHash(nonce)
+
+      while (!hash.startsWith('0'.repeat(this.difficulty))) {
+        nonce++
+        hash = this._calculateHash(nonce)
+      }
+
+      this.nonce = nonce
+      this.hash = hash
+      this.transactions.forEach(tx => {
+        tx.setStatus('success')
+      })
+      resolve(this.hash)
+    })
   }
 
-  calculateMerkelRoot() {
-    const tree = this.calculateMerkelTree()
-    return tree.getRoot().toString('hex')
+  verify() {
+    if (this.nonce === null) return false
+
+    return (
+      this._verifyTransactions() &&
+      this.hash === this._calculateHash(this.nonce)
+    )
   }
 
-  calculateHash(nonce: number | null) {
-    if (nonce === null) throw new Error('nonce must be given a numerical value')
+  private _calculateMerkelTree(leaves: string[]) {
+    this._tree = new MerkleTree(leaves, keccak256)
+    this.merkelRoot = this._tree.getRoot().toString('hex')
+    return this._tree
+  }
 
+  private _calculateHash(nonce: number) {
     return keccak256(
       toUtf8Bytes(
         [
@@ -58,47 +95,21 @@ export default class Block {
     )
   }
 
-  async mine() {
-    return new Promise((resolve, reject) => {
-      if (this.nonce !== null || this.hash !== null)
-        reject('Block has already been mined')
+  private _verifyTransactions() {
+    if (!this._tree || !this.merkelRoot) return false
 
-      if (!this.verifyTransactions()) reject("Block's Transactions are invalid")
+    for (const tx of this.transactions.values()) {
+      if (!tx.verify()) return false
+    }
 
-      let nonce = 0
-      let hash = this.calculateHash(nonce)
-
-      while (!hash.startsWith('0'.repeat(this.difficulty))) {
-        nonce++
-        hash = this.calculateHash(nonce)
-      }
-      this.nonce = nonce
-      this.hash = hash
-      this.transactions.forEach(tx => {
-        tx.setStatus('success')
-      })
-      resolve(this.hash)
-    })
-  }
-
-  verifyTransactions() {
-    if (!this.transactions.every(tx => tx.verify())) return false
-
-    const tree = this.calculateMerkelTree()
-    const isValid = this.transactions.every(tx => {
+    for (const tx of this.transactions.values()) {
       if (!tx.hash) return false
-      const proof = tree.getProof(tx.hash)
-      return tree.verify(proof, tx.hash, tree.getRoot())
-    })
+      const proof = this._tree.getProof(tx.hash)
+      if (!proof) return false
+      const isValid = this._tree.verify(proof, tx.hash, this._tree.getRoot())
+      if (!isValid) return false
+    }
 
-    return isValid
-  }
-
-  verify() {
-    if (this.nonce === null) return false
-
-    return (
-      this.verifyTransactions() && this.hash === this.calculateHash(this.nonce)
-    )
+    return true
   }
 }

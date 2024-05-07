@@ -41,13 +41,16 @@ const TRANSACTION_ARGS_2 = {
 }
 
 export function buildTransaction(transactionArgs?: TransactionArgsType) {
-  return new Transaction(transactionArgs || TRANSACTION_ARGS_1)
+  return new Transaction(transactionArgs || { ...TRANSACTION_ARGS_1 })
 }
 
 export function buildTransactionMap(
   transactionArgsArray?: TransactionArgsType[],
 ) {
-  const args = transactionArgsArray || [TRANSACTION_ARGS_1, TRANSACTION_ARGS_2]
+  const args = transactionArgsArray || [
+    { ...TRANSACTION_ARGS_1 },
+    { ...TRANSACTION_ARGS_2 },
+  ]
 
   if (args.length === 0)
     throw new Error(
@@ -73,7 +76,7 @@ const BLOCK_ARGS = {
 }
 
 export function buildBlock(blockArgs?: BlockArgsType) {
-  return new Block(blockArgs || BLOCK_ARGS)
+  return new Block(blockArgs || { ...BLOCK_ARGS })
 }
 
 // * General helpers
